@@ -118,7 +118,7 @@ export default function Menu() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="font-syne font-black text-4xl sm:text-6xl text-white tracking-tight"
+            className="font-syne font-black text-[clamp(2rem,4.5vw,3.75rem)] text-white tracking-tight"
           >
             Explore The Menu
           </motion.h2>

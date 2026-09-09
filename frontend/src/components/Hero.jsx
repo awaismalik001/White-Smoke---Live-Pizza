@@ -128,12 +128,12 @@ export default function Hero() {
             LIVE WOOD-FIRED ARTISAN PIZZAS &amp; BURGERS
           </motion.div>
 
-          {/* Main Title */}
+          {/* Main Title with Responsive Fluid Sizing */}
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15 }}
-            className="font-syne font-black text-5xl sm:text-7xl xl:text-8xl tracking-tight leading-[1.02] text-white"
+            className="font-syne font-black text-[clamp(2.5rem,6vw,5.5rem)] tracking-tight leading-[1.05] text-white"
           >
             SMOKED TO <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-red via-orange-500 to-brand-gold">
@@ -146,7 +146,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
-            className="mt-6 text-base sm:text-lg text-zinc-400 font-normal leading-relaxed max-w-xl"
+            className="mt-5 text-[clamp(0.9rem,1.4vw,1.15rem)] text-zinc-400 font-normal leading-relaxed max-w-xl"
           >
             Taste the unmistakable aroma of live flames, 100% mozzarella stretch, and secret slow-marinated spices at Mellow Multi Mall, B-17 Islamabad.
           </motion.p>

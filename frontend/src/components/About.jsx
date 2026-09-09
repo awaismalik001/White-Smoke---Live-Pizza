@@ -60,7 +60,7 @@ export default function About() {
           className="lg:col-span-6 text-left"
         >
           <span className="text-brand-red text-xs font-bold tracking-[4px] uppercase block mb-3">Our Heritage</span>
-          <h2 className="font-syne font-black text-4xl sm:text-5xl text-white tracking-tight leading-tight">
+          <h2 className="font-syne font-black text-[clamp(2rem,4.2vw,3.5rem)] text-white tracking-tight leading-tight">
             The Story Behind <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-red to-brand-gold">
               White Smoke Live Pizza
