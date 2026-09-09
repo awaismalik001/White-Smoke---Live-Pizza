@@ -127,4 +127,4 @@ Update the mock number `923000000000` in:
 
 ---
 
-Made with ❤️ for White Smoke Live Pizza, Islamabad
+Made by Malik Tech Solutions
