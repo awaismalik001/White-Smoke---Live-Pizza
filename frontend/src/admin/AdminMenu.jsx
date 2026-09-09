@@ -59,17 +59,17 @@ export default function AdminMenu() {
   }
 
   return (
-    <div className="flex min-h-screen bg-brand-dark text-brand-white">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-brand-dark text-brand-white">
       <AdminSidebar />
-      <main className="flex-1 p-8 overflow-auto">
+      <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 overflow-auto">
         <div className="mb-8">
-          <h1 className="font-bebas text-4xl tracking-[3px]">Menu Manager</h1>
+          <h1 className="font-syne font-black text-3xl sm:text-4xl tracking-tight">Menu Manager</h1>
           <p className="text-brand-white/40 text-sm mt-1">{items.length} menu items</p>
         </div>
 
         {/* Add / Edit Form */}
-        <div className="bg-brand-card border border-brand-border rounded-sm p-6 mb-8">
-          <h2 className="font-bebas text-xl tracking-[2px] text-brand-red mb-4">
+        <div className="bg-brand-card border border-brand-border rounded-sm p-4 sm:p-6 mb-6 sm:mb-8">
+          <h2 className="font-syne font-bold text-xl tracking-tight text-brand-red mb-4">
             {editId ? '✏️ Edit Item' : '➕ Add New Item'}
           </h2>
           <form onSubmit={handleAdd} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">

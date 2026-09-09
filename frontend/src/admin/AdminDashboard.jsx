@@ -2,33 +2,35 @@ import { useContext, useEffect, useState } from 'react'
 import { useNavigate, Link, useLocation } from 'react-router-dom'
 import { AdminContext } from '../context/AdminContext'
 import { getStats, getAdminOrders } from '../hooks/useApi'
-import { FiGrid, FiList, FiStar, FiMenu, FiLogOut } from 'react-icons/fi'
+import { FiGrid, FiList, FiStar, FiMenu, FiLogOut, FiShield } from 'react-icons/fi'
+import { ADMIN_PATH } from '../adminPath'
 
 export function AdminSidebar() {
   const { logout } = useContext(AdminContext)
   const navigate   = useNavigate()
   const location   = useLocation()
 
-  const handleLogout = () => { logout(); navigate('/admin') }
+  const handleLogout = () => { logout(); navigate(ADMIN_PATH) }
 
   const navItems = [
-    { to: '/admin/dashboard', icon: <FiGrid />, label: 'Dashboard' },
-    { to: '/admin/orders',    icon: <FiList />, label: 'Orders' },
-    { to: '/admin/menu',      icon: <FiMenu />, label: 'Menu Manager' },
-    { to: '/admin/reviews',   icon: <FiStar />, label: 'Reviews' },
+    { to: `${ADMIN_PATH}/dashboard`, icon: <FiGrid />, label: 'Dashboard' },
+    { to: `${ADMIN_PATH}/orders`,    icon: <FiList />, label: 'Orders' },
+    { to: `${ADMIN_PATH}/menu`,      icon: <FiMenu />, label: 'Menu Manager' },
+    { to: `${ADMIN_PATH}/reviews`,   icon: <FiStar />, label: 'Reviews' },
+    { to: `${ADMIN_PATH}/security`,  icon: <FiShield />, label: 'Security' },
   ]
 
   return (
-    <aside className="admin-sidebar flex flex-col">
-      <div className="p-6 border-b border-brand-border">
-        <div className="font-bebas text-xl tracking-[4px] text-glow-red">WHITE <span className="text-brand-red">SMOKE</span></div>
+    <aside className="admin-sidebar w-full lg:w-60 shrink-0 flex flex-col lg:min-h-screen border-b lg:border-b-0 lg:border-r border-brand-border">
+      <div className="px-4 py-4 lg:p-6 border-b border-brand-border">
+        <div className="font-syne font-black text-xl tracking-tight text-glow-red">WHITE <span className="text-brand-red">SMOKE</span></div>
         <div className="text-brand-white/30 text-[0.6rem] tracking-[4px] uppercase mt-0.5">Admin Panel</div>
       </div>
 
-      <nav className="flex-1 p-4 space-y-1">
+      <nav className="flex-1 flex lg:flex-col gap-1 overflow-x-auto p-2 lg:p-4 lg:space-y-1">
         {navItems.map(item => (
           <Link key={item.to} to={item.to}
-            className={`flex items-center gap-3 px-4 py-3 rounded-sm text-sm font-semibold transition-all duration-200
+            className={`shrink-0 flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-sm text-xs lg:text-sm font-semibold transition-all duration-200
               ${location.pathname === item.to
                 ? 'bg-brand-red text-white box-glow-red'
                 : 'text-brand-white/50 hover:text-brand-white hover:bg-brand-border'}`}>
@@ -37,9 +39,9 @@ export function AdminSidebar() {
         ))}
       </nav>
 
-      <div className="p-4 border-t border-brand-border">
+      <div className="p-2 lg:p-4 border-t lg:border-t border-brand-border">
         <button onClick={handleLogout}
-          className="flex items-center gap-3 w-full px-4 py-3 text-brand-white/50 hover:text-brand-red text-sm font-semibold transition-colors rounded-sm hover:bg-brand-border">
+          className="flex items-center gap-2 lg:gap-3 w-full px-3 lg:px-4 py-2.5 lg:py-3 text-brand-white/50 hover:text-brand-red text-xs lg:text-sm font-semibold transition-colors rounded-sm hover:bg-brand-border">
           <FiLogOut /> Logout
         </button>
       </div>
@@ -51,7 +53,7 @@ function StatCard({ label, value, color = 'text-brand-white' }) {
   return (
     <div className="bg-brand-card border border-brand-border rounded-sm p-6 hover:border-brand-red transition-colors">
       <p className="text-brand-white/50 text-xs tracking-[3px] uppercase mb-2">{label}</p>
-      <p className={`font-bebas text-4xl tracking-[2px] ${color}`}>{value}</p>
+      <p className={`font-syne font-black text-4xl tracking-tight ${color}`}>{value}</p>
     </div>
   )
 }
@@ -75,17 +77,17 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="flex min-h-screen bg-brand-dark text-brand-white">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-brand-dark text-brand-white">
       <AdminSidebar />
-      <main className="flex-1 p-8 overflow-auto">
+      <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 overflow-auto">
         <div className="mb-8">
-          <h1 className="font-bebas text-4xl tracking-[3px]">Dashboard</h1>
+          <h1 className="font-syne font-black text-4xl tracking-tight">Dashboard</h1>
           <p className="text-brand-white/40 text-sm mt-1">Welcome back, Admin 👋</p>
         </div>
 
         {/* Stats */}
         {stats && (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8 lg:mb-10">
             <StatCard label="Total Orders"   value={stats.totalOrders}   />
             <StatCard label="Pending Orders" value={stats.pendingOrders} color="text-yellow-400" />
             <StatCard label="Revenue (Rs.)"  value={`${Number(stats.totalRevenue || 0).toLocaleString()}`} color="text-brand-gold" />
@@ -96,7 +98,7 @@ export default function AdminDashboard() {
         {/* Recent Orders */}
         <div className="bg-brand-card border border-brand-border rounded-sm overflow-hidden">
           <div className="p-5 border-b border-brand-border">
-            <h2 className="font-bebas text-xl tracking-[2px]">Recent Orders</h2>
+            <h2 className="font-syne font-bold text-xl tracking-tight">Recent Orders</h2>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">

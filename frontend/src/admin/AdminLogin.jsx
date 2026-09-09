@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { AdminContext } from '../context/AdminContext'
 import { adminLogin } from '../hooks/useApi'
+import { ADMIN_PATH } from '../adminPath'
 
 export default function AdminLogin() {
   const [password, setPassword] = useState('')
@@ -18,7 +19,7 @@ export default function AdminLogin() {
       const res = await adminLogin(password)
       login(res.data.token)
       toast.success('Welcome back, Admin!')
-      navigate('/admin/dashboard')
+      navigate(`${ADMIN_PATH}/dashboard`)
     } catch (err) {
       toast.error(err.response?.data?.message || 'Incorrect password.')
     } finally { setLoading(false) }
@@ -33,17 +34,17 @@ export default function AdminLogin() {
       <div className="relative w-full max-w-sm">
         {/* Logo */}
         <div className="text-center mb-10">
-          <h1 className="font-bebas text-5xl tracking-[6px] text-glow-red">
+          <h1 className="font-syne font-black text-5xl tracking-tight text-glow-red">
             WHITE <span className="text-brand-red">SMOKE</span>
           </h1>
-          <p className="font-bebas text-brand-white/40 tracking-[8px] text-sm mt-1">ADMIN PANEL</p>
+          <p className="font-syne font-bold text-brand-white/40 tracking-[0.18em] text-xs mt-2">ADMIN PANEL</p>
         </div>
 
         {/* Card */}
         <div className="bg-brand-card border border-brand-border rounded-sm p-8">
           <div className="text-center mb-8">
             <div className="text-4xl mb-3">🔐</div>
-            <h2 className="font-bebas text-2xl tracking-[3px]">Admin Access</h2>
+            <h2 className="font-syne font-bold text-2xl tracking-tight">Admin Access</h2>
             <p className="text-brand-white/40 text-xs mt-1">Enter your admin password to continue</p>
           </div>
 

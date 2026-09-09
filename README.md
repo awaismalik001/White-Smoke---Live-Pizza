@@ -39,7 +39,7 @@ Fill in `.env`:
 ```
 DATABASE_URL="your-supabase-connection-string"
 JWT_SECRET="any-random-long-string"
-ADMIN_PASSWORD="YourChosenPassword"
+ADMIN_PASSWORD="a-unique-12-plus-character-initial-password"
 PORT=5000
 FRONTEND_URL="http://localhost:5173"
 ```
@@ -67,11 +67,11 @@ Open: http://localhost:5173
 ---
 
 ## 🔐 Admin Panel
-Navigate to: `http://localhost:5173/admin`
+Navigate to: `http://localhost:5173/staff-access`
 
 > ⚠️ This URL is NOT linked anywhere on the public website. Only you know it exists.
 
-Login with the password you set in `ADMIN_PASSWORD`.
+Login with the password you set in `ADMIN_PASSWORD`. On the first successful login it is securely hashed and saved to the database. Afterwards, change it from **Security** in the panel. Login attempts are limited to 5 per minute per IP address.
 
 ---
 

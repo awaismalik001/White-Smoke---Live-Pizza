@@ -8,6 +8,15 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+model Admin {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique @default("admin")
+  password  String
+  tokenVersion Int   @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Order {
   id           Int      @id @default(autoincrement())
   orderNumber  String   @unique

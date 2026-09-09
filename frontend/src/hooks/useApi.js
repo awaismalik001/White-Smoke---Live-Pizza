@@ -16,6 +16,7 @@ export const trackOrder    = (num)  => API.get(`/api/orders/${num}`)
 
 // ─── Admin Auth ───────────────────────────────────────────────
 export const adminLogin    = (password) => API.post('/api/admin/login', { password })
+export const changeAdminPassword = (data, token) => API.put('/api/admin/password', data, authHeader(token))
 
 // ─── Admin Protected ──────────────────────────────────────────
 export const getStats          = (token)          => API.get('/api/admin/stats', authHeader(token))

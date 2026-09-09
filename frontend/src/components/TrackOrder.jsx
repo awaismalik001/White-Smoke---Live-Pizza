@@ -34,17 +34,17 @@ export default function TrackOrder({ onClose }) {
   const currentStep = order ? STATUSES.indexOf(order.status) : -1
 
   return (
-    <div className="fixed inset-0 z-[999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-brand-card border border-brand-border rounded-sm w-full max-w-lg">
+    <div className="fixed inset-0 z-[999] bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div className="bg-brand-card border border-brand-border rounded-t-2xl sm:rounded-sm w-full max-w-lg max-h-[92dvh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-brand-border">
-          <h2 className="font-bebas text-2xl tracking-[3px] text-brand-red">Track Your Order</h2>
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-brand-border">
+          <h2 className="font-syne font-bold text-2xl tracking-tight text-brand-red">Track Your Order</h2>
           <button onClick={onClose} className="text-brand-white/60 hover:text-brand-red text-2xl transition-colors"><FiX /></button>
         </div>
 
-        <div className="p-6">
+        <div className="p-4 sm:p-6">
           {/* Search Form */}
-          <form onSubmit={handleTrack} className="flex gap-3 mb-6">
+          <form onSubmit={handleTrack} className="flex flex-col sm:flex-row gap-3 mb-6">
             <input value={orderNum} onChange={e => setOrderNum(e.target.value)}
               placeholder="Enter Order Number (e.g. WS-0001)"
               className="flex-1 bg-brand-dark border border-brand-border px-4 py-3 text-sm text-brand-white

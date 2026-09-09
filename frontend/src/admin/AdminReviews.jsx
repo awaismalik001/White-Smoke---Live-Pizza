@@ -44,16 +44,16 @@ export default function AdminReviews() {
   const display  = tab === 'pending' ? pending : approved
 
   return (
-    <div className="flex min-h-screen bg-brand-dark text-brand-white">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-brand-dark text-brand-white">
       <AdminSidebar />
-      <main className="flex-1 p-8 overflow-auto">
+      <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 overflow-auto">
         <div className="mb-8">
-          <h1 className="font-bebas text-4xl tracking-[3px]">Reviews</h1>
+          <h1 className="font-syne font-black text-3xl sm:text-4xl tracking-tight">Reviews</h1>
           <p className="text-brand-white/40 text-sm mt-1">{pending.length} pending · {approved.length} approved</p>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-3 mb-6">
+        <div className="flex flex-wrap gap-2 sm:gap-3 mb-6">
           {[['pending', `Pending (${pending.length})`], ['approved', `Approved (${approved.length})`]].map(([key, label]) => (
             <button key={key} onClick={() => setTab(key)}
               className={`text-xs font-bold tracking-[2px] uppercase px-5 py-2 rounded-sm border transition-all

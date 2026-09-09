@@ -7,6 +7,10 @@ const app = express();
 const prisma = new PrismaClient();
 const PORT = process.env.PORT || 5000;
 
+// Hosted deployments use one reverse proxy, so rate limiting can see the
+// visitor's IP address rather than the proxy address.
+if (process.env.NODE_ENV === "production") app.set("trust proxy", 1);
+
 // ─── Middleware ───────────────────────────────────────────────
 app.use(cors({
   origin: [

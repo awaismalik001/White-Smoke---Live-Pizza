@@ -1,0 +1,28 @@
+# Secrets and per-machine configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+
+# Dependencies and generated build output
+node_modules/
+dist/
+.vite/
+coverage/
+
+# Prisma generated files and local databases
+prisma/*.db
+prisma/*.db-journal
+backend/node_modules/.prisma/
+
+# Logs, caches, and OS/editor files
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

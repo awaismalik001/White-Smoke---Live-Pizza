@@ -5,6 +5,8 @@
 /* ─── Base Typography & Mood ────────────────────────── */
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -12,7 +14,33 @@ body {
   color: #f3f4f6;
   font-family: 'Plus Jakarta Sans', sans-serif;
   overflow-x: hidden;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
+  font-stretch: normal;
+  font-synthesis: none;
+}
+
+/* Keep controls on the same family and prevent mobile browser font resizing. */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  font-stretch: normal;
+}
+
+/* Fixed pixel tracking was visually over-wide on compact screens. */
+.tracking-\[4px\] { letter-spacing: 0.14em !important; }
+.tracking-\[3px\] { letter-spacing: 0.12em !important; }
+.tracking-\[2px\] { letter-spacing: 0.1em !important; }
+.tracking-\[1px\] { letter-spacing: 0.06em !important; }
+
+@media (max-width: 639px) {
+  .tracking-\[4px\] { letter-spacing: 0.1em !important; }
+  .tracking-\[3px\] { letter-spacing: 0.08em !important; }
+  .tracking-\[2px\] { letter-spacing: 0.06em !important; }
+
+  .flip-card:hover .flip-inner { transform: none; }
+  .flip-back { display: none; }
 }
 
 /* ─── Custom Scrollbar ───────────────────────────────── */

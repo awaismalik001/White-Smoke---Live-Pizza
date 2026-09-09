@@ -1,24 +1,79 @@
 const express = require("express");
 const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
+const bcrypt = require("bcryptjs");
+const { rateLimit } = require("express-rate-limit");
 const prisma = new PrismaClient();
 const { verifyToken, generateToken } = require("../middleware/auth");
 
+const loginLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  limit: 5,
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  message: { success: false, message: "Too many login attempts. Please wait one minute and try again." },
+});
+
+const getOrCreateAdmin = async () => {
+  const admin = await prisma.admin.findUnique({ where: { username: "admin" } });
+  if (admin) return admin;
+
+  if (!process.env.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD.length < 12) {
+    throw new Error("Set a strong ADMIN_PASSWORD (at least 12 characters) to create the first administrator.");
+  }
+
+  return prisma.admin.create({
+    data: { username: "admin", password: await bcrypt.hash(process.env.ADMIN_PASSWORD, 12) },
+  });
+};
+
 // POST /api/admin/login
-router.post("/login", async (req, res) => {
+router.post("/login", loginLimiter, async (req, res) => {
   try {
     const { password } = req.body;
     if (!password) {
       return res.status(400).json({ success: false, message: "Password is required." });
     }
-    if (password !== process.env.ADMIN_PASSWORD) {
+    const admin = await getOrCreateAdmin();
+    const passwordMatches = await bcrypt.compare(password, admin.password);
+    if (!passwordMatches) {
       return res.status(401).json({ success: false, message: "Incorrect password." });
     }
-    const token = generateToken({ role: "admin", restaurant: "whitesmoke" });
+    const token = generateToken({ role: "admin", adminId: admin.id, tokenVersion: admin.tokenVersion });
     res.json({ success: true, token, message: "Login successful." });
   } catch (error) {
     console.error("Admin login error:", error);
     res.status(500).json({ success: false, message: "Login failed." });
+  }
+});
+
+// PUT /api/admin/password
+router.put("/password", verifyToken, async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ success: false, message: "Current and new passwords are required." });
+    }
+    if (newPassword.length < 12) {
+      return res.status(400).json({ success: false, message: "Use a password with at least 12 characters." });
+    }
+    if (newPassword === currentPassword) {
+      return res.status(400).json({ success: false, message: "Choose a different password." });
+    }
+
+    const admin = await prisma.admin.findUnique({ where: { id: req.admin.adminId } });
+    if (!admin || !(await bcrypt.compare(currentPassword, admin.password))) {
+      return res.status(401).json({ success: false, message: "Current password is incorrect." });
+    }
+
+    await prisma.admin.update({
+      where: { id: admin.id },
+      data: { password: await bcrypt.hash(newPassword, 12), tokenVersion: { increment: 1 } },
+    });
+    res.json({ success: true, message: "Password changed. Please sign in again on all devices." });
+  } catch (error) {
+    console.error("Password update error:", error);
+    res.status(500).json({ success: false, message: "Failed to change password." });
   }
 });
 

@@ -64,15 +64,15 @@ export default function OrderModal({ onClose }) {
   }
 
   return (
-    <div className="fixed inset-0 z-[999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-brand-card border border-brand-border rounded-sm w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-[999] bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div className="bg-brand-card border border-brand-border rounded-t-2xl sm:rounded-sm w-full max-w-2xl max-h-[92dvh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-brand-border sticky top-0 bg-brand-card z-10">
-          <h2 className="font-bebas text-2xl tracking-[3px] text-brand-red">Place Your Order</h2>
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-brand-border sticky top-0 bg-brand-card z-10">
+          <h2 className="font-syne font-bold text-2xl tracking-tight text-brand-red">Place Your Order</h2>
           <button onClick={onClose} className="text-brand-white/60 hover:text-brand-red text-2xl transition-colors"><FiX /></button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+        <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-6">
           {/* Customer Details */}
           <div className="space-y-3">
             <h3 className="text-brand-white/50 text-xs tracking-[3px] uppercase font-bold">Your Details</h3>
@@ -116,7 +116,7 @@ export default function OrderModal({ onClose }) {
           <div className="border-t border-brand-border pt-4">
             <div className="flex justify-between items-center mb-4">
               <span className="font-bold">Total</span>
-              <span className="font-bebas text-3xl text-brand-gold">Rs.{total.toLocaleString()}/-</span>
+              <span className="font-syne font-bold text-3xl text-brand-gold">Rs.{total.toLocaleString()}/-</span>
             </div>
             <button type="submit" disabled={loading}
               className="w-full bg-brand-red hover:bg-brand-red2 text-white font-bold text-xs tracking-[3px] uppercase py-4 rounded-sm
