@@ -1,11 +1,13 @@
 import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
+import { FiArrowDownRight, FiShoppingBag } from 'react-icons/fi'
 
 export default function Hero() {
   const canvasRef = useRef(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
+    if (!canvas) return
     const ctx = canvas.getContext('2d')
     let animId
 
@@ -17,58 +19,76 @@ export default function Hero() {
     window.addEventListener('resize', resize)
 
     // Smoke particles
-    const smokes = Array.from({ length: 35 }, () => createSmoke(canvas))
-    // Ember particles
-    const embers = Array.from({ length: 55 }, () => createEmber(canvas))
+    const smokes = Array.from({ length: 30 }, () => createSmoke(canvas))
+    // Amber embers
+    const embers = Array.from({ length: 50 }, () => createEmber(canvas))
 
     function createSmoke(c) {
       return {
-        x: Math.random() * c.width, y: c.height + 20,
-        size: Math.random() * 70 + 20,
-        speedY: -(Math.random() * 0.4 + 0.1),
-        speedX: (Math.random() - 0.5) * 0.3,
-        alpha: Math.random() * 0.04 + 0.01,
-        grow: Math.random() * 0.2 + 0.1,
-      }
-    }
-    function createEmber(c) {
-      return {
-        x: Math.random() * c.width, y: c.height + 5,
-        size: Math.random() * 2.5 + 0.5,
-        speedY: -(Math.random() * 2 + 0.8),
-        speedX: (Math.random() - 0.5) * 1.5,
-        life: 1, decay: Math.random() * 0.005 + 0.002,
-        alpha: Math.random() * 0.8 + 0.2,
-        isGold: Math.random() > 0.7,
+        x: Math.random() * c.width,
+        y: c.height + 20,
+        size: Math.random() * 80 + 30,
+        speedY: -(Math.random() * 0.45 + 0.15),
+        speedX: (Math.random() - 0.5) * 0.35,
+        alpha: Math.random() * 0.045 + 0.015,
+        grow: Math.random() * 0.25 + 0.1,
       }
     }
 
-    function resetSmoke(p) { Object.assign(p, { ...createSmoke(canvas), y: canvas.height + 20 }) }
-    function resetEmber(p) { Object.assign(p, { ...createEmber(canvas), y: canvas.height + 5 }) }
+    function createEmber(c) {
+      return {
+        x: Math.random() * c.width,
+        y: c.height + 10,
+        size: Math.random() * 2.8 + 0.6,
+        speedY: -(Math.random() * 2.2 + 0.9),
+        speedX: (Math.random() - 0.5) * 1.8,
+        life: 1,
+        decay: Math.random() * 0.005 + 0.002,
+        alpha: Math.random() * 0.85 + 0.2,
+        isGold: Math.random() > 0.65,
+      }
+    }
+
+    function resetSmoke(p) {
+      Object.assign(p, { ...createSmoke(canvas), y: canvas.height + 20 })
+    }
+    function resetEmber(p) {
+      Object.assign(p, { ...createEmber(canvas), y: canvas.height + 10 })
+    }
 
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-      smokes.forEach(p => {
-        p.x += p.speedX; p.y += p.speedY; p.size += p.grow; p.alpha *= 0.998
+      smokes.forEach((p) => {
+        p.x += p.speedX
+        p.y += p.speedY
+        p.size += p.grow
+        p.alpha *= 0.998
         if (p.y + p.size < 0 || p.alpha < 0.001) resetSmoke(p)
+
         const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size)
-        g.addColorStop(0, `rgba(200,170,170,${p.alpha})`)
+        g.addColorStop(0, `rgba(230, 200, 200, ${p.alpha})`)
         g.addColorStop(1, 'rgba(0,0,0,0)')
         ctx.fillStyle = g
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill()
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+        ctx.fill()
       })
 
-      embers.forEach(p => {
-        p.x += p.speedX + Math.sin(Date.now() * 0.001 + p.x) * 0.3
-        p.y += p.speedY; p.life -= p.decay
+      embers.forEach((p) => {
+        p.x += p.speedX + Math.sin(Date.now() * 0.0015 + p.x) * 0.4
+        p.y += p.speedY
+        p.life -= p.decay
         if (p.life <= 0 || p.y < -10) resetEmber(p)
+
         ctx.save()
         ctx.globalAlpha = p.life * p.alpha
         ctx.fillStyle = p.isGold ? '#f5a623' : '#e50000'
         ctx.shadowColor = p.isGold ? '#f5a623' : '#e50000'
-        ctx.shadowBlur = 8
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill()
+        ctx.shadowBlur = 10
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+        ctx.fill()
         ctx.restore()
       })
 
@@ -76,62 +96,154 @@ export default function Hero() {
     }
     draw()
 
-    return () => { cancelAnimationFrame(animId); window.removeEventListener('resize', resize) }
+    return () => {
+      cancelAnimationFrame(animId)
+      window.removeEventListener('resize', resize)
+    }
   }, [])
 
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 
-  const fadeUp = (delay = 0) => ({
-    initial: { opacity: 0, y: 30 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.8, delay, ease: 'easeOut' },
-  })
-
   return (
-    <section id="home" className="relative h-screen flex flex-col items-center justify-center text-center overflow-hidden">
-      {/* Gradient BG */}
-      <div className="absolute inset-0 bg-hero-gradient" />
+    <section id="home" className="relative min-h-screen flex items-center justify-center pt-24 pb-16 px-6 overflow-hidden">
+      {/* Dynamic Background Radiance */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_40%,rgba(180,0,0,0.18),rgba(5,5,5,0.98))]" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[550px] h-[550px] bg-brand-red/15 rounded-full blur-[140px] pointer-events-none" />
 
       {/* Smoke Canvas */}
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-0" />
 
-      {/* Content */}
-      <div className="relative z-10 px-6">
-        <motion.p {...fadeUp(0.2)} className="text-brand-red text-xs font-bold tracking-[8px] uppercase mb-4">
-          🔥 Live Pizza &amp; Fast Food
-        </motion.p>
+      {/* Hero Body */}
+      <div className="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        {/* Left Typography */}
+        <div className="lg:col-span-7 text-left">
+          {/* Eyebrow badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-xs font-semibold tracking-wider text-brand-red mb-6"
+          >
+            <span className="w-2 h-2 rounded-full bg-brand-red animate-ping" />
+            LIVE WOOD-FIRED ARTISAN PIZZAS &amp; BURGERS
+          </motion.div>
 
-        <motion.h1 {...fadeUp(0.5)} className="font-bebas leading-none tracking-[6px]">
-          <div className="text-[clamp(4rem,12vw,10rem)] text-brand-white text-glow-red">WHITE</div>
-          <div className="text-[clamp(4rem,12vw,10rem)] text-stroke-red">SMOKE</div>
-        </motion.h1>
+          {/* Main Title */}
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+            className="font-syne font-black text-5xl sm:text-7xl xl:text-8xl tracking-tight leading-[1.02] text-white"
+          >
+            SMOKED TO <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-red via-orange-500 to-brand-gold">
+              PERFECTION.
+            </span>
+          </motion.h1>
 
-        <motion.p {...fadeUp(0.8)} className="font-dancing text-brand-gold text-[clamp(1.2rem,3vw,2rem)] mt-2">
-          Live Pizza · Islamabad
-        </motion.p>
+          {/* Subtitle */}
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+            className="mt-6 text-base sm:text-lg text-zinc-400 font-normal leading-relaxed max-w-xl"
+          >
+            Taste the unmistakable aroma of live flames, 100% mozzarella stretch, and secret slow-marinated spices at Mellow Multi Mall, B-17 Islamabad.
+          </motion.p>
 
-        <motion.p {...fadeUp(1.0)} className="max-w-md mx-auto text-brand-white/50 text-sm leading-loose mt-5">
-          Experience the finest live-cooked pizza, smoky flavors, and bold tastes —
-          crafted fresh for you every single time at B-17 Islamabad.
-        </motion.p>
+          {/* Actions */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.45 }}
+            className="mt-9 flex flex-wrap items-center gap-4"
+          >
+            <button
+              onClick={() => scrollTo('contact')}
+              className="group flex items-center gap-3 bg-brand-red hover:bg-brand-red2 text-white font-bold text-sm px-8 py-4 rounded-full transition-all duration-300 box-glow-red hover:box-glow-red-strong hover:scale-105 active:scale-95 tracking-wide"
+            >
+              <FiShoppingBag className="text-lg group-hover:-translate-y-0.5 transition-transform" />
+              Order Right Now
+            </button>
+            <button
+              onClick={() => scrollTo('menu')}
+              className="flex items-center gap-2 px-7 py-4 rounded-full border border-white/15 text-zinc-200 hover:text-white hover:border-white/40 hover:bg-white/[0.03] text-sm font-semibold transition-all duration-300"
+            >
+              Explore Menu
+              <FiArrowDownRight className="text-brand-red text-base" />
+            </button>
+          </motion.div>
 
-        <motion.div {...fadeUp(1.2)} className="flex flex-wrap justify-center gap-4 mt-8">
-          <button onClick={() => scrollTo('menu')}
-            className="bg-brand-red hover:bg-brand-red2 text-white font-bold text-xs tracking-[3px] uppercase px-10 py-4 rounded-sm transition-all duration-300 box-glow-red hover:box-glow-red-strong hover:-translate-y-1">
-            Explore Menu
-          </button>
-          <button onClick={() => scrollTo('deals')}
-            className="border border-brand-white/30 hover:border-brand-red text-brand-white hover:text-brand-red font-bold text-xs tracking-[3px] uppercase px-10 py-4 rounded-sm transition-all duration-300 hover:-translate-y-1">
-            View Deals
-          </button>
+          {/* Micro stats banner */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="mt-12 pt-8 border-t border-white/[0.08] flex items-center gap-8 text-xs text-zinc-400 font-medium"
+          >
+            <div>
+              <span className="block font-syne font-bold text-2xl text-white">4.9 ★</span>
+              <span>Customer Rating</span>
+            </div>
+            <div className="w-px h-8 bg-white/10" />
+            <div>
+              <span className="block font-syne font-bold text-2xl text-white">25 Mins</span>
+              <span>Fast Kitchen Prep</span>
+            </div>
+            <div className="w-px h-8 bg-white/10" />
+            <div>
+              <span className="block font-syne font-bold text-2xl text-brand-gold">100%</span>
+              <span>Fresh Halal Cuts</span>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Right High-Def Live Food Showcase with 3D Depth */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.9, delay: 0.3 }}
+          className="lg:col-span-5 relative flex items-center justify-center"
+        >
+          {/* Circular Glow Aura */}
+          <div className="absolute w-80 sm:w-96 h-80 sm:h-96 rounded-full bg-gradient-to-tr from-brand-red/30 to-amber-500/20 blur-2xl animate-pulse-slow" />
+
+          {/* Centerpiece Image Container */}
+          <div className="relative w-full max-w-[420px] aspect-square rounded-3xl overflow-hidden border border-white/10 p-3 bg-gradient-to-b from-white/[0.06] to-transparent shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] group">
+            <img
+              src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1200&auto=format&fit=crop"
+              alt="White Smoke Signature Pizza"
+              className="w-full h-full object-cover rounded-2xl transition-transform duration-700 group-hover:scale-105 brightness-105 contrast-110"
+              loading="eager"
+            />
+
+            {/* Floating Glass Badges */}
+            <motion.div
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+              className="absolute -top-3 -left-3 glass-card rounded-2xl p-3 sm:p-4 flex items-center gap-3 shadow-xl"
+            >
+              <span className="text-2xl">🔥</span>
+              <div>
+                <p className="text-[10px] uppercase font-bold text-zinc-400 tracking-wider">Live Wood Oven</p>
+                <p className="text-xs font-syne font-bold text-white">450°C Stone Baked</p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+              className="absolute -bottom-3 -right-3 glass-card rounded-2xl p-3 sm:p-4 flex items-center gap-3 shadow-xl"
+            >
+              <span className="text-2xl">🍕</span>
+              <div>
+                <p className="text-[10px] uppercase font-bold text-brand-gold tracking-wider">Bestseller</p>
+                <p className="text-xs font-syne font-bold text-white">Crown Crust Special</p>
+              </div>
+            </motion.div>
+          </div>
         </motion.div>
       </div>
-
-      {/* Scroll indicator */}
-      <motion.div {...fadeUp(1.8)} className="absolute bottom-8 flex flex-col items-center gap-2">
-        <div className="w-px h-12 bg-gradient-to-b from-brand-red to-transparent animate-pulse" />
-        <span className="text-brand-white/30 text-[0.6rem] tracking-[3px] uppercase">Scroll</span>
-      </motion.div>
     </section>
   )
 }

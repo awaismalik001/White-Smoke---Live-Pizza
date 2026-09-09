@@ -2,6 +2,18 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { getMenu } from '../hooks/useApi'
 
+// High Definition food photos from Unsplash for each menu category
+const CATEGORY_IMAGES = {
+  'Pizza (Regular)': 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=900&auto=format&fit=crop',
+  'Pizza (Special)': 'https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?q=80&w=900&auto=format&fit=crop',
+  'Burgers':         'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=900&auto=format&fit=crop',
+  'Rolls':           'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?q=80&w=900&auto=format&fit=crop',
+  'Appetizer':       'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?q=80&w=900&auto=format&fit=crop',
+  'Pasta':           'https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=900&auto=format&fit=crop',
+  'Donor & Sandwich':'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?q=80&w=900&auto=format&fit=crop',
+  'Beverages':       'https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=900&auto=format&fit=crop',
+}
+
 const FALLBACK = {
   'Pizza (Regular)': [
     { name: 'Chicken Tikka Pizza', price: 'S:500 / M:1050 / L:1600 / XL:2050' },
@@ -17,105 +29,227 @@ const FALLBACK = {
     { name: 'Half & Half Pizza', price: 'S:800 / M:1500 / L:2000 / XL:2500' },
   ],
   'Burgers': [
-    { name: 'Chicken Burger', price: '250' },{ name: 'Crunch Burger', price: '300' },
-    { name: 'Petty Burger', price: '350' },{ name: 'Zinger Burger', price: '450' },{ name: 'Tower Burger', price: '550' },
+    { name: 'Chicken Burger', price: '250' },
+    { name: 'Crunch Burger', price: '300' },
+    { name: 'Petty Burger', price: '350' },
+    { name: 'Zinger Burger', price: '450' },
+    { name: 'Tower Burger', price: '550' },
   ],
   'Rolls': [
-    { name: 'Chicken Shawarma', price: '220' },{ name: 'Special Shawarma', price: '250' },
-    { name: 'Zinger Shawarma', price: '350' },{ name: 'Jumbo Shawarma', price: '400' },
-    { name: 'Chicken Paratha Roll', price: '400' },{ name: 'Zinger Paratha Roll', price: '400' },
-    { name: 'Kabab Shawarma', price: '250' },{ name: 'Kabab Paratha Roll', price: '350' },
-    { name: 'Spin Roll (4 Pcs)', price: '550' },{ name: 'Malai Boti Spin Roll (4 Pcs)', price: '600' },
-    { name: 'Tortilla Wrap', price: '500' },{ name: 'Tortilla Wrap Malai Boti', price: '600' },
+    { name: 'Chicken Shawarma', price: '220' },
+    { name: 'Special Shawarma', price: '250' },
+    { name: 'Zinger Shawarma', price: '350' },
+    { name: 'Jumbo Shawarma', price: '400' },
+    { name: 'Chicken Paratha Roll', price: '400' },
+    { name: 'Zinger Paratha Roll', price: '400' },
+    { name: 'Kabab Shawarma', price: '250' },
+    { name: 'Kabab Paratha Roll', price: '350' },
+    { name: 'Spin Roll (4 Pcs)', price: '550' },
+    { name: 'Malai Boti Spin Roll', price: '600' },
+    { name: 'Tortilla Wrap', price: '500' },
+    { name: 'Tortilla Wrap Malai Boti', price: '600' },
   ],
   'Appetizer': [
-    { name: 'Regular Fries', price: '200' },{ name: 'Jumbo Fries', price: '350' },
-    { name: 'Loaded Fries (Small)', price: '450' },{ name: 'Loaded Fries (Large)', price: '650' },
-    { name: 'Oven Bake Wings (5 Pcs)', price: '400' },{ name: 'Oven Bake Wings (10 Pcs)', price: '800' },
-    { name: 'Hot Wings (10 Pcs)', price: '800' },{ name: 'Hot Shots (10 Pcs)', price: '800' },
-    { name: 'Nuggets (5 Pcs)', price: '400' },{ name: 'Nuggets (10 Pcs)', price: '800' },
+    { name: 'Regular Fries', price: '200' },
+    { name: 'Jumbo Fries', price: '350' },
+    { name: 'Loaded Fries (Small)', price: '450' },
+    { name: 'Loaded Fries (Large)', price: '650' },
+    { name: 'Oven Bake Wings (5 Pcs)', price: '400' },
+    { name: 'Oven Bake Wings (10 Pcs)', price: '800' },
+    { name: 'Hot Wings (10 Pcs)', price: '800' },
+    { name: 'Hot Shots (10 Pcs)', price: '800' },
+    { name: 'Nuggets (5 Pcs)', price: '400' },
+    { name: 'Nuggets (10 Pcs)', price: '800' },
   ],
-  'Pasta': [{ name: 'Special Pasta (Small)', price: '450' },{ name: 'Special Pasta (Large)', price: '750' }],
+  'Pasta': [
+    { name: 'Special Pasta (Small)', price: '450' },
+    { name: 'Special Pasta (Large)', price: '750' },
+  ],
   'Donor & Sandwich': [
-    { name: 'Regular Donor', price: '500' },{ name: 'Special Donor', price: '600' },{ name: 'Special Sandwich', price: '600' },
+    { name: 'Regular Donor', price: '500' },
+    { name: 'Special Donor', price: '600' },
+    { name: 'Special Sandwich', price: '600' },
   ],
   'Beverages': [
-    { name: '300ml Drink', price: '80' },{ name: '345ml Drink', price: '100' },{ name: '500ml Drink', price: '120' },
-    { name: '1 Ltr Drink', price: '200' },{ name: '1.5 Ltr Drink', price: '220' },
+    { name: '300ml Drink', price: '80' },
+    { name: '345ml Drink', price: '100' },
+    { name: '500ml Drink', price: '120' },
+    { name: '1 Ltr Drink', price: '200' },
+    { name: '1.5 Ltr Drink', price: '220' },
   ],
 }
-
-const EMOJIS = { 'Pizza (Regular)': '🍕','Pizza (Special)': '🍕','Burgers': '🍔','Rolls': '🌯',
-  'Appetizer': '🍟','Pasta': '🍝','Donor & Sandwich': '🥙','Beverages': '🥤','Platter': '🍽️' }
 
 export default function Menu() {
   const [menu, setMenu] = useState(FALLBACK)
   const [activeTab, setActiveTab] = useState(Object.keys(FALLBACK)[0])
 
   useEffect(() => {
-    getMenu().then(r => { if (r.data?.menu && Object.keys(r.data.menu).length) setMenu(r.data.menu) }).catch(() => {})
+    getMenu()
+      .then((r) => {
+        if (r.data?.menu && Object.keys(r.data.menu).length) {
+          setMenu(r.data.menu)
+        }
+      })
+      .catch(() => {})
   }, [])
 
   const tabs = Object.keys(menu)
   const items = menu[activeTab] || []
+  const currentImg = CATEGORY_IMAGES[activeTab] || CATEGORY_IMAGES['Pizza (Regular)']
 
   return (
-    <section id="menu" className="py-28 px-6 bg-brand-darker">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-14">
-          <span className="text-brand-red text-xs font-bold tracking-[6px] uppercase block mb-3">What We Serve</span>
-          <h2 className="font-bebas text-[clamp(2.5rem,6vw,5rem)] tracking-[4px]">Our Menu</h2>
-          <div className="section-line mx-auto mt-4" />
+    <section id="menu" className="py-28 px-6 relative bg-zinc-950">
+      {/* Background ambient lighting */}
+      <div className="absolute top-1/2 left-0 w-96 h-96 bg-brand-red/10 rounded-full blur-[140px] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Section Header */}
+        <div className="text-center max-w-2xl mx-auto mb-14">
+          <motion.span
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-brand-red text-xs font-bold tracking-[4px] uppercase block mb-3"
+          >
+            Handcrafted Flavors
+          </motion.span>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="font-syne font-black text-4xl sm:text-6xl text-white tracking-tight"
+          >
+            Explore The Menu
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-zinc-400 text-sm mt-4"
+          >
+            Hover or tap on any category card to flip and view all varieties with live pricing.
+          </motion.p>
         </div>
 
-        {/* Tabs */}
-        <div className="flex flex-wrap justify-center gap-2 mb-10">
-          {tabs.map(tab => (
-            <button key={tab} onClick={() => setActiveTab(tab)}
-              className={`text-[0.7rem] font-bold tracking-[2px] uppercase px-5 py-2.5 rounded-sm border transition-all duration-300 ${
-                activeTab === tab
-                  ? 'bg-brand-red border-brand-red text-white box-glow-red'
-                  : 'bg-transparent border-brand-border text-brand-white/50 hover:border-brand-red hover:text-brand-red'
-              }`}>
-              {EMOJIS[tab] || '🍴'} {tab}
-            </button>
-          ))}
+        {/* Categories Pill Navigation */}
+        <div className="flex flex-wrap justify-center gap-2 mb-14">
+          {tabs.map((tab) => {
+            const isActive = activeTab === tab
+            return (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`relative px-5 py-2.5 rounded-full text-xs font-bold tracking-wide transition-all duration-300 ${
+                  isActive
+                    ? 'bg-brand-red text-white box-glow-red scale-105'
+                    : 'bg-zinc-900/80 hover:bg-zinc-800 text-zinc-400 hover:text-white border border-white/[0.05]'
+                }`}
+              >
+                {tab}
+              </button>
+            )
+          })}
         </div>
 
-        {/* Cards */}
+        {/* Tab Content: High-Def 3D Flip Card Showcase */}
         <AnimatePresence mode="wait">
-          <motion.div key={activeTab} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {/* Split into chunks of 6 items per card */}
-            {Array.from({ length: Math.ceil(items.length / 6) }, (_, ci) => {
-              const chunk = items.slice(ci * 6, ci * 6 + 6)
-              return (
-                <div key={ci} className="flip-card h-[300px]">
-                  <div className="flip-inner">
-                    {/* Front */}
-                    <div className="flip-front bg-brand-card border border-brand-border flex flex-col items-center justify-center p-6">
-                      <div className="text-6xl mb-4 animate-float">{EMOJIS[activeTab] || '🍴'}</div>
-                      <h3 className="font-bebas text-2xl tracking-[2px] text-brand-white text-center">{activeTab}</h3>
-                      <p className="text-brand-red text-[0.65rem] tracking-[2px] mt-1">{chunk.length} items · hover to see</p>
-                    </div>
-                    {/* Back */}
-                    <div className="flip-back bg-gradient-to-br from-[#1a0000] to-brand-card border border-brand-red p-5 flex flex-col justify-center"
-                      style={{ boxShadow: 'inset 0 0 30px rgba(229,0,0,0.08)' }}>
-                      <h3 className="font-bebas text-xl tracking-[2px] text-brand-red mb-3 text-center">{activeTab}</h3>
-                      <ul className="space-y-2 overflow-y-auto">
-                        {chunk.map((item, i) => (
-                          <li key={i} className="flex justify-between items-center text-[0.72rem] border-b border-white/5 pb-1.5">
-                            <span className="text-brand-white/80">{item.name}</span>
-                            <span className="text-brand-gold font-bold ml-2 shrink-0">Rs.{item.price}</span>
-                          </li>
-                        ))}
-                      </ul>
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch"
+          >
+            {/* Left Big Feature Banner with Real HD Food Photo */}
+            <div className="lg:col-span-5 relative rounded-3xl overflow-hidden min-h-[380px] border border-white/10 group">
+              <img
+                src={currentImg}
+                alt={activeTab}
+                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 brightness-95"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-8">
+                <span className="text-brand-red text-xs font-bold uppercase tracking-widest block mb-1">Category Highlight</span>
+                <h3 className="font-syne font-black text-3xl text-white">{activeTab}</h3>
+                <p className="text-zinc-300 text-xs mt-2">
+                  Prepared fresh to order using original recipes and authentic cheese blends.
+                </p>
+                <div className="mt-4 inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-semibold text-white">
+                  <span>{items.length} items available</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Cards Grid with 3D Flip capability */}
+            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {Array.from({ length: Math.ceil(items.length / 5) }, (_, ci) => {
+                const chunk = items.slice(ci * 5, ci * 5 + 5)
+                return (
+                  <div key={ci} className="flip-card h-[380px] cursor-pointer">
+                    <div className="flip-inner">
+                      {/* Front Card */}
+                      <div className="flip-front glass-card p-6 flex flex-col justify-between">
+                        <div>
+                          <div className="w-12 h-12 rounded-2xl bg-brand-red/10 border border-brand-red/30 flex items-center justify-center text-brand-red font-bold text-lg mb-4">
+                            #{ci + 1}
+                          </div>
+                          <h4 className="font-syne font-bold text-2xl text-white">{activeTab}</h4>
+                          <p className="text-zinc-400 text-xs mt-1">Pack {ci + 1}</p>
+                        </div>
+
+                        <div className="space-y-3 my-auto">
+                          {chunk.slice(0, 3).map((item, idx) => (
+                            <div key={idx} className="flex justify-between items-center text-xs">
+                              <span className="text-zinc-300 truncate max-w-[170px]">{item.name}</span>
+                              <span className="text-brand-gold font-semibold font-syne ml-2 shrink-0">Rs.{item.price}</span>
+                            </div>
+                          ))}
+                          {chunk.length > 3 && (
+                            <p className="text-zinc-500 text-[11px] italic">+{chunk.length - 3} more items...</p>
+                          )}
+                        </div>
+
+                        <div className="pt-4 border-t border-white/[0.08] flex items-center justify-between">
+                          <span className="text-brand-red text-xs font-bold tracking-wider uppercase">
+                            Hover to Flip 3D
+                          </span>
+                          <span className="text-zinc-500 text-xs">↻</span>
+                        </div>
+                      </div>
+
+                      {/* Back Card */}
+                      <div className="flip-back p-6 flex flex-col justify-between bg-gradient-to-br from-zinc-900 via-zinc-950 to-brand-red/20 border border-brand-red/50 shadow-[inset_0_0_30px_rgba(229,0,0,0.15)]">
+                        <div>
+                          <div className="flex items-center justify-between mb-4">
+                            <span className="text-brand-red text-[11px] font-bold uppercase tracking-wider">Full Price List</span>
+                            <span className="text-zinc-400 text-xs font-semibold">{chunk.length} Items</span>
+                          </div>
+                          <h4 className="font-syne font-bold text-lg text-white mb-4">{activeTab}</h4>
+
+                          <div className="space-y-3 overflow-y-auto max-h-[220px] pr-1">
+                            {chunk.map((item, i) => (
+                              <div key={i} className="flex justify-between items-start text-xs border-b border-white/5 pb-2">
+                                <span className="text-zinc-200 font-medium">{item.name}</span>
+                                <span className="text-brand-gold font-syne font-bold ml-2 shrink-0">
+                                  Rs.{item.price}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="pt-3 border-t border-white/10 text-center">
+                          <span className="text-[11px] text-zinc-400">Available for Dine-in &amp; Takeaway</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )
-            })}
+                )
+              })}
+            </div>
           </motion.div>
         </AnimatePresence>
       </div>
