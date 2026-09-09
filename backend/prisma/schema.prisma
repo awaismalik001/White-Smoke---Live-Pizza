@@ -1,0 +1,48 @@
+// This is your Prisma schema file
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Order {
+  id           Int      @id @default(autoincrement())
+  orderNumber  String   @unique
+  customerName String
+  phone        String
+  address      String
+  items        Json
+  total        Float
+  status       String   @default("Pending")
+  notes        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("orders")
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  name      String
+  rating    Int
+  comment   String
+  approved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("reviews")
+}
+
+model MenuItem {
+  id        Int     @id @default(autoincrement())
+  category  String
+  name      String
+  price     String
+  available Boolean @default(true)
+
+  @@map("menu_items")
+}
