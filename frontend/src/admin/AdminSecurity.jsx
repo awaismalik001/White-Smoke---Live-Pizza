@@ -37,12 +37,12 @@ export default function AdminSecurity() {
       <AdminSidebar />
       <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 overflow-auto">
         <div className="mb-8">
-          <h1 className="font-syne font-black text-3xl sm:text-4xl tracking-tight">Security</h1>
+          <h1 className="font-heading font-extrabold text-3xl sm:text-4xl tracking-tight">Security</h1>
           <p className="text-brand-white/40 text-sm mt-1">Manage the password for this administrator account.</p>
         </div>
 
         <section className="max-w-xl bg-brand-card border border-brand-border rounded-sm p-4 sm:p-6">
-          <h2 className="font-syne font-bold text-2xl tracking-tight mb-2">Change password</h2>
+          <h2 className="font-heading font-bold text-xl sm:text-2xl tracking-tight mb-2">Change password</h2>
           <p className="text-brand-white/40 text-sm mb-6">All active administrator sessions will be signed out after the change.</p>
           <form onSubmit={handleSubmit} className="space-y-4">
             <input name="currentPassword" type="password" value={form.currentPassword} onChange={updateField}

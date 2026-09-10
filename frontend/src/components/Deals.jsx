@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 import { FiCheckCircle } from 'react-icons/fi'
 
 const DEALS = [
@@ -104,8 +105,21 @@ const DEALS = [
   },
 ]
 
-export default function Deals() {
-  const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+export default function Deals({ onOrder }) {
+  const navigate = useNavigate()
+
+  const handleOrder = (deal) => {
+    if (onOrder) {
+      onOrder(deal)
+    } else {
+      const el = document.getElementById('contact')
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' })
+      } else {
+        navigate('/#contact')
+      }
+    }
+  }
 
   return (
     <section id="deals" className="py-28 px-6 bg-black relative overflow-hidden">
@@ -118,7 +132,7 @@ export default function Deals() {
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-brand-red text-xs font-bold tracking-[4px] uppercase block mb-3"
+            className="text-brand-red text-xs font-bold tracking-wider uppercase block mb-3"
           >
             Exclusive Combos
           </motion.span>
@@ -127,7 +141,7 @@ export default function Deals() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="font-syne font-black text-[clamp(2rem,4.5vw,3.75rem)] text-white tracking-tight"
+            className="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight"
           >
             Signature Deals
           </motion.h2>
@@ -179,7 +193,7 @@ export default function Deals() {
 
                 <div className="absolute bottom-3 left-4">
                   <span className="text-zinc-400 text-[11px] font-semibold uppercase tracking-wider">{deal.category}</span>
-                  <h3 className="font-syne font-bold text-xl text-white tracking-wide">{deal.title}</h3>
+                  <h3 className="font-heading font-bold text-lg sm:text-xl text-white tracking-wide">{deal.title}</h3>
                 </div>
               </div>
 
@@ -198,13 +212,13 @@ export default function Deals() {
                 <div className="pt-5 border-t border-white/[0.08] flex items-center justify-between mt-auto">
                   <div>
                     <span className="text-[10px] uppercase font-bold text-zinc-500 block">Total Price</span>
-                    <span className="font-syne font-black text-2xl sm:text-3xl text-brand-gold">
+                    <span className="font-heading font-extrabold text-2xl sm:text-3xl text-brand-gold">
                       Rs.{deal.price}
                     </span>
                   </div>
 
                   <button
-                    onClick={() => scrollTo('contact')}
+                    onClick={() => handleOrder(deal)}
                     className="bg-brand-red hover:bg-brand-red2 text-white text-xs font-bold px-5 py-2.5 rounded-full transition-all duration-300 box-glow-red hover:scale-105 active:scale-95"
                   >
                     Order Combo

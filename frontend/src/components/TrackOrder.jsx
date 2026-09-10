@@ -38,7 +38,7 @@ export default function TrackOrder({ onClose }) {
       <div className="bg-brand-card border border-brand-border rounded-t-2xl sm:rounded-sm w-full max-w-lg max-h-[92dvh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between p-4 sm:p-6 border-b border-brand-border">
-          <h2 className="font-syne font-bold text-2xl tracking-tight text-brand-red">Track Your Order</h2>
+          <h2 className="font-heading font-bold text-xl sm:text-2xl tracking-tight text-brand-red">Track Your Order</h2>
           <button onClick={onClose} className="text-brand-white/60 hover:text-brand-red text-2xl transition-colors"><FiX /></button>
         </div>
 

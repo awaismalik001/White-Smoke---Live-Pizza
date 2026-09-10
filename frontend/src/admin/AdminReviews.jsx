@@ -48,7 +48,7 @@ export default function AdminReviews() {
       <AdminSidebar />
       <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 overflow-auto">
         <div className="mb-8">
-          <h1 className="font-syne font-black text-3xl sm:text-4xl tracking-tight">Reviews</h1>
+          <h1 className="font-heading font-extrabold text-3xl sm:text-4xl tracking-tight">Reviews</h1>
           <p className="text-brand-white/40 text-sm mt-1">{pending.length} pending · {approved.length} approved</p>
         </div>
 

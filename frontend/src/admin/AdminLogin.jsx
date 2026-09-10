@@ -34,17 +34,17 @@ export default function AdminLogin() {
       <div className="relative w-full max-w-sm">
         {/* Logo */}
         <div className="text-center mb-10">
-          <h1 className="font-syne font-black text-5xl tracking-tight text-glow-red">
+          <h1 className="font-heading font-extrabold text-4xl sm:text-5xl tracking-tight text-glow-red">
             WHITE <span className="text-brand-red">SMOKE</span>
           </h1>
-          <p className="font-syne font-bold text-brand-white/40 tracking-[0.18em] text-xs mt-2">ADMIN PANEL</p>
+          <p className="font-heading font-bold text-brand-white/40 tracking-wider text-xs mt-2">ADMIN PANEL</p>
         </div>
 
         {/* Card */}
         <div className="bg-brand-card border border-brand-border rounded-sm p-8">
           <div className="text-center mb-8">
             <div className="text-4xl mb-3">🔐</div>
-            <h2 className="font-syne font-bold text-2xl tracking-tight">Admin Access</h2>
+            <h2 className="font-heading font-bold text-xl sm:text-2xl tracking-tight">Admin Access</h2>
             <p className="text-brand-white/40 text-xs mt-1">Enter your admin password to continue</p>
           </div>
 

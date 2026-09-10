@@ -1,26 +1,64 @@
+import { useNavigate, useLocation } from 'react-router-dom'
 import { FiArrowUp } from 'react-icons/fi'
 
 const links = [
-  { name: 'Home', id: 'home' },
-  { name: 'Menu', id: 'menu' },
-  { name: 'Deals', id: 'deals' },
-  { name: 'Gallery', id: 'gallery' },
-  { name: 'About', id: 'about' },
-  { name: 'Contact', id: 'contact' },
+  { name: 'Home', to: '/', type: 'home' },
+  { name: 'Menu', to: '/menu', type: 'page' },
+  { name: 'Deals', to: '/deals', type: 'page' },
+  { name: 'Gallery', to: 'gallery', type: 'section' },
+  { name: 'About', to: 'about', type: 'section' },
+  { name: 'Contact', to: 'contact', type: 'section' },
 ]
 
 export default function Footer() {
-  const scrollTo = (id) => document.getElementById(id.toLowerCase())?.scrollIntoView({ behavior: 'smooth' })
+  const navigate = useNavigate()
+  const location = useLocation()
+  const isHome = location.pathname === '/'
+
+  const handleLinkClick = (link) => {
+    if (link.type === 'home') {
+      if (isHome) {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      } else {
+        navigate('/')
+      }
+      return
+    }
+
+    if (link.type === 'page') {
+      if (location.pathname === link.to) {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      } else {
+        navigate(link.to)
+      }
+      return
+    }
+
+    if (link.type === 'section') {
+      if (isHome) {
+        document.getElementById(link.to)?.scrollIntoView({ behavior: 'smooth' })
+      } else {
+        navigate(`/#${link.to}`)
+      }
+    }
+  }
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   return (
     <footer className="bg-zinc-950 border-t border-white/[0.08] pt-16 pb-12 px-6 relative z-10">
       <div className="max-w-7xl mx-auto flex flex-col items-center text-center">
         {/* Brand */}
-        <div className="flex items-center gap-2 mb-3 cursor-pointer" onClick={() => scrollTo('home')}>
-          <div className="w-8 h-8 rounded-full bg-brand-red flex items-center justify-center text-white font-syne font-black text-sm shadow-[0_0_15px_rgba(229,0,0,0.7)]">
+        <div
+          className="flex items-center gap-2 mb-3 cursor-pointer"
+          onClick={() => handleLinkClick({ type: 'home' })}
+        >
+          <div className="w-8 h-8 rounded-full bg-brand-red flex items-center justify-center text-white font-heading font-extrabold text-sm shadow-[0_0_15px_rgba(229,0,0,0.7)]">
             W
           </div>
-          <span className="font-syne font-black text-2xl tracking-wider text-white">
+          <span className="font-heading font-bold text-xl sm:text-2xl tracking-wide text-white">
             WHITE<span className="text-brand-red ml-1">SMOKE</span>
           </span>
         </div>
@@ -33,8 +71,8 @@ export default function Footer() {
         <div className="flex flex-wrap justify-center gap-6 mb-10">
           {links.map((link) => (
             <button
-              key={link.id}
-              onClick={() => scrollTo(link.id)}
+              key={link.name}
+              onClick={() => handleLinkClick(link)}
               className="text-zinc-400 hover:text-white text-xs font-semibold tracking-wide transition-colors"
             >
               {link.name}
@@ -50,7 +88,7 @@ export default function Footer() {
             <span>Mellow Multi Mall, B-17</span>
             <span>0304-5788808</span>
             <button
-              onClick={() => scrollTo('home')}
+              onClick={scrollToTop}
               className="w-8 h-8 rounded-full bg-white/[0.05] hover:bg-brand-red text-white flex items-center justify-center transition-colors"
               title="Back to Top"
             >

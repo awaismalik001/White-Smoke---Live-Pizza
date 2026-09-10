@@ -43,7 +43,7 @@ export default function AdminOrders() {
       <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 overflow-auto">
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h1 className="font-syne font-black text-3xl sm:text-4xl tracking-tight">Orders</h1>
+            <h1 className="font-heading font-extrabold text-3xl sm:text-4xl tracking-tight">Orders</h1>
             <p className="text-brand-white/40 text-sm mt-1">{orders.length} total orders</p>
           </div>
           {/* Filter */}

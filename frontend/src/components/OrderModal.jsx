@@ -68,14 +68,14 @@ export default function OrderModal({ onClose }) {
       <div className="bg-brand-card border border-brand-border rounded-t-2xl sm:rounded-sm w-full max-w-2xl max-h-[92dvh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between p-4 sm:p-6 border-b border-brand-border sticky top-0 bg-brand-card z-10">
-          <h2 className="font-syne font-bold text-2xl tracking-tight text-brand-red">Place Your Order</h2>
+          <h2 className="font-heading font-bold text-xl sm:text-2xl tracking-tight text-brand-red">Place Your Order</h2>
           <button onClick={onClose} className="text-brand-white/60 hover:text-brand-red text-2xl transition-colors"><FiX /></button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-6">
           {/* Customer Details */}
           <div className="space-y-3">
-            <h3 className="text-brand-white/50 text-xs tracking-[3px] uppercase font-bold">Your Details</h3>
+            <h3 className="text-brand-white/50 text-xs tracking-wider uppercase font-bold">Your Details</h3>
             <input value={form.customerName} onChange={e => setForm(p => ({ ...p, customerName: e.target.value }))}
               placeholder="Full Name *" required
               className="w-full bg-brand-dark border border-brand-border px-4 py-3 text-sm text-brand-white placeholder-brand-white/30 rounded-sm focus:outline-none focus:border-brand-red transition-colors" />
@@ -92,7 +92,7 @@ export default function OrderModal({ onClose }) {
 
           {/* Item Selection */}
           <div>
-            <h3 className="text-brand-white/50 text-xs tracking-[3px] uppercase font-bold mb-3">Select Items</h3>
+            <h3 className="text-brand-white/50 text-xs tracking-wider uppercase font-bold mb-3">Select Items</h3>
             <div className="space-y-2">
               {QUICK_ITEMS.map(item => (
                 <div key={item.name} className="flex items-center justify-between bg-brand-dark border border-brand-border rounded-sm px-4 py-3">
@@ -116,7 +116,7 @@ export default function OrderModal({ onClose }) {
           <div className="border-t border-brand-border pt-4">
             <div className="flex justify-between items-center mb-4">
               <span className="font-bold">Total</span>
-              <span className="font-syne font-bold text-3xl text-brand-gold">Rs.{total.toLocaleString()}/-</span>
+              <span className="font-heading font-extrabold text-2xl sm:text-3xl text-brand-gold">Rs.{total.toLocaleString()}/-</span>
             </div>
             <button type="submit" disabled={loading}
               className="w-full bg-brand-red hover:bg-brand-red2 text-white font-bold text-xs tracking-[3px] uppercase py-4 rounded-sm

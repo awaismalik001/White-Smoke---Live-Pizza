@@ -12,11 +12,10 @@ html {
 body {
   background-color: #050505;
   color: #f3f4f6;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   overflow-x: hidden;
-  letter-spacing: normal;
-  font-stretch: normal;
-  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Keep controls on the same family and prevent mobile browser font resizing. */
@@ -25,19 +24,18 @@ input,
 select,
 textarea {
   font: inherit;
-  font-stretch: normal;
 }
 
-/* Fixed pixel tracking was visually over-wide on compact screens. */
-.tracking-\[4px\] { letter-spacing: 0.14em !important; }
-.tracking-\[3px\] { letter-spacing: 0.12em !important; }
-.tracking-\[2px\] { letter-spacing: 0.1em !important; }
-.tracking-\[1px\] { letter-spacing: 0.06em !important; }
+/* Balanced letter spacing without unnatural horizontal stretching. */
+.tracking-\[4px\] { letter-spacing: 0.06em !important; }
+.tracking-\[3px\] { letter-spacing: 0.04em !important; }
+.tracking-\[2px\] { letter-spacing: 0.03em !important; }
+.tracking-\[1px\] { letter-spacing: 0.015em !important; }
 
 @media (max-width: 639px) {
-  .tracking-\[4px\] { letter-spacing: 0.1em !important; }
-  .tracking-\[3px\] { letter-spacing: 0.08em !important; }
-  .tracking-\[2px\] { letter-spacing: 0.06em !important; }
+  .tracking-\[4px\] { letter-spacing: 0.04em !important; }
+  .tracking-\[3px\] { letter-spacing: 0.03em !important; }
+  .tracking-\[2px\] { letter-spacing: 0.02em !important; }
 
   .flip-card:hover .flip-inner { transform: none; }
   .flip-back { display: none; }

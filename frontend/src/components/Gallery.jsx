@@ -48,7 +48,7 @@ export default function Gallery() {
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-brand-red text-xs font-bold tracking-[4px] uppercase block mb-3"
+            className="text-brand-red text-xs font-bold tracking-wider uppercase block mb-3"
           >
             Visual Experience
           </motion.span>
@@ -57,7 +57,7 @@ export default function Gallery() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="font-syne font-black text-[clamp(2rem,4.5vw,3.75rem)] text-white tracking-tight"
+            className="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight"
           >
             Crafted for Cravings
           </motion.h2>
@@ -97,7 +97,7 @@ export default function Gallery() {
                 <span className="text-[11px] font-bold uppercase tracking-widest text-brand-red mb-1">
                   {item.category}
                 </span>
-                <h3 className="font-syne font-bold text-xl sm:text-2xl text-white">
+                <h3 className="font-heading font-bold text-lg sm:text-xl text-white">
                   {item.title}
                 </h3>
               </div>

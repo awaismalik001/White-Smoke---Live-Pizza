@@ -12,10 +12,10 @@ export default function StatsBar() {
         {stats.map((s, i) => (
           <div key={s.label} className="relative group">
             <div className="flex flex-col">
-              <span className="font-syne font-black text-4xl sm:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-zinc-400 group-hover:from-brand-red group-hover:to-orange-500 transition-all duration-300">
+              <span className="font-heading font-extrabold text-3xl sm:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-zinc-400 group-hover:from-brand-red group-hover:to-orange-500 transition-all duration-300">
                 {s.num}
               </span>
-              <span className="font-syne font-bold text-xs sm:text-sm text-white tracking-wide mt-2">
+              <span className="font-heading font-bold text-xs sm:text-sm text-white tracking-wide mt-2">
                 {s.label}
               </span>
               <span className="text-xs text-zinc-500 font-normal mt-0.5">

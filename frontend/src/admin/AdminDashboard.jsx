@@ -23,7 +23,7 @@ export function AdminSidebar() {
   return (
     <aside className="admin-sidebar w-full lg:w-60 shrink-0 flex flex-col lg:min-h-screen border-b lg:border-b-0 lg:border-r border-brand-border">
       <div className="px-4 py-4 lg:p-6 border-b border-brand-border">
-        <div className="font-syne font-black text-xl tracking-tight text-glow-red">WHITE <span className="text-brand-red">SMOKE</span></div>
+        <div className="font-heading font-extrabold text-xl tracking-tight text-glow-red">WHITE <span className="text-brand-red">SMOKE</span></div>
         <div className="text-brand-white/30 text-[0.6rem] tracking-[4px] uppercase mt-0.5">Admin Panel</div>
       </div>
 
@@ -53,7 +53,7 @@ function StatCard({ label, value, color = 'text-brand-white' }) {
   return (
     <div className="bg-brand-card border border-brand-border rounded-sm p-6 hover:border-brand-red transition-colors">
       <p className="text-brand-white/50 text-xs tracking-[3px] uppercase mb-2">{label}</p>
-      <p className={`font-syne font-black text-4xl tracking-tight ${color}`}>{value}</p>
+      <p className={`font-heading font-extrabold text-3xl sm:text-4xl tracking-tight ${color}`}>{value}</p>
     </div>
   )
 }
@@ -81,7 +81,7 @@ export default function AdminDashboard() {
       <AdminSidebar />
       <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 overflow-auto">
         <div className="mb-8">
-          <h1 className="font-syne font-black text-4xl tracking-tight">Dashboard</h1>
+          <h1 className="font-heading font-extrabold text-3xl sm:text-4xl tracking-tight">Dashboard</h1>
           <p className="text-brand-white/40 text-sm mt-1">Welcome back, Admin 👋</p>
         </div>
 
@@ -98,7 +98,7 @@ export default function AdminDashboard() {
         {/* Recent Orders */}
         <div className="bg-brand-card border border-brand-border rounded-sm overflow-hidden">
           <div className="p-5 border-b border-brand-border">
-            <h2 className="font-syne font-bold text-xl tracking-tight">Recent Orders</h2>
+            <h2 className="font-heading font-bold text-lg sm:text-xl tracking-tight">Recent Orders</h2>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">

@@ -1,8 +1,10 @@
 import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 import { FiArrowDownRight, FiShoppingBag } from 'react-icons/fi'
 
 export default function Hero() {
+  const navigate = useNavigate()
   const canvasRef = useRef(null)
 
   useEffect(() => {
@@ -128,12 +130,12 @@ export default function Hero() {
             LIVE WOOD-FIRED ARTISAN PIZZAS &amp; BURGERS
           </motion.div>
 
-          {/* Main Title with Responsive Fluid Sizing */}
+          {/* Main Title with Responsive Proportional Sizing */}
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15 }}
-            className="font-syne font-black text-[clamp(2.5rem,6vw,5.5rem)] tracking-tight leading-[1.05] text-white"
+            className="font-heading font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight leading-[1.08] text-white"
           >
             SMOKED TO <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-red via-orange-500 to-brand-gold">
@@ -146,7 +148,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
-            className="mt-5 text-[clamp(0.95rem,1.4vw,1.15rem)] text-zinc-400 font-normal leading-relaxed max-w-xl mx-auto lg:mx-0"
+            className="mt-5 text-sm sm:text-base md:text-lg text-zinc-400 font-normal leading-relaxed max-w-xl mx-auto lg:mx-0"
           >
             Taste the unmistakable aroma of live flames, 100% mozzarella stretch, and secret slow-marinated spices at Mellow Multi Mall, B-17 Islamabad.
           </motion.p>
@@ -166,7 +168,7 @@ export default function Hero() {
               Order Right Now
             </button>
             <button
-              onClick={() => scrollTo('menu')}
+              onClick={() => navigate('/menu')}
               className="flex w-full sm:w-auto justify-center items-center gap-2 px-7 py-4 rounded-full border border-white/15 text-zinc-200 hover:text-white hover:border-white/40 hover:bg-white/[0.03] text-sm font-semibold transition-all duration-300"
             >
               Explore Menu
@@ -182,17 +184,17 @@ export default function Hero() {
             className="mt-10 pt-6 sm:pt-8 border-t border-white/[0.08] grid grid-cols-3 gap-3 sm:flex sm:items-center sm:gap-8 text-xs text-zinc-400 font-medium text-center lg:text-left"
           >
             <div>
-              <span className="block font-syne font-bold text-2xl text-white">4.9 ★</span>
+              <span className="block font-heading font-bold text-xl sm:text-2xl text-white">4.9 ★</span>
               <span>Customer Rating</span>
             </div>
             <div className="hidden sm:block w-px h-8 bg-white/10" />
             <div>
-              <span className="block font-syne font-bold text-2xl text-white">25 Mins</span>
+              <span className="block font-heading font-bold text-xl sm:text-2xl text-white">25 Mins</span>
               <span>Fast Kitchen Prep</span>
             </div>
             <div className="hidden sm:block w-px h-8 bg-white/10" />
             <div>
-              <span className="block font-syne font-bold text-2xl text-brand-gold">100%</span>
+              <span className="block font-heading font-bold text-xl sm:text-2xl text-brand-gold">100%</span>
               <span>Fresh Halal Cuts</span>
             </div>
           </motion.div>
@@ -226,7 +228,7 @@ export default function Hero() {
               <span className="text-2xl">🔥</span>
               <div>
                 <p className="text-[10px] uppercase font-bold text-zinc-400 tracking-wider">Live Wood Oven</p>
-                <p className="text-xs font-syne font-bold text-white">450°C Stone Baked</p>
+                <p className="text-xs font-heading font-bold text-white">450°C Stone Baked</p>
               </div>
             </motion.div>
 
@@ -238,7 +240,7 @@ export default function Hero() {
               <span className="text-2xl">🍕</span>
               <div>
                 <p className="text-[10px] uppercase font-bold text-brand-gold tracking-wider">Bestseller</p>
-                <p className="text-xs font-syne font-bold text-white">Crown Crust Special</p>
+                <p className="text-xs font-heading font-bold text-white">Crown Crust Special</p>
               </div>
             </motion.div>
           </div>

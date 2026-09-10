@@ -46,7 +46,7 @@ export default function About() {
 
             <div className="absolute bottom-6 left-6 right-6 glass-card p-5 rounded-2xl">
               <span className="text-brand-red text-xs font-bold uppercase tracking-wider block mb-1">Authentic Kitchen</span>
-              <p className="font-syne font-bold text-lg text-white">Hand-tossed dough with fresh secret sauce daily.</p>
+              <p className="font-heading font-bold text-base sm:text-lg text-white">Hand-tossed dough with fresh secret sauce daily.</p>
             </div>
           </div>
         </motion.div>
@@ -59,8 +59,8 @@ export default function About() {
           transition={{ duration: 0.7 }}
           className="lg:col-span-6 text-left"
         >
-          <span className="text-brand-red text-xs font-bold tracking-[4px] uppercase block mb-3">Our Heritage</span>
-          <h2 className="font-syne font-black text-[clamp(2rem,4.2vw,3.5rem)] text-white tracking-tight leading-tight">
+          <span className="text-brand-red text-xs font-bold tracking-wider uppercase block mb-3">Our Heritage</span>
+          <h2 className="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-tight">
             The Story Behind <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-red to-brand-gold">
               White Smoke Live Pizza
@@ -85,7 +85,7 @@ export default function About() {
                 <div className="w-10 h-10 rounded-xl bg-white/[0.04] flex items-center justify-center mb-3">
                   {p.icon}
                 </div>
-                <h4 className="font-syne font-bold text-sm text-white mb-1.5">{p.title}</h4>
+                <h4 className="font-heading font-bold text-sm text-white mb-1.5">{p.title}</h4>
                 <p className="text-zinc-400 text-xs leading-relaxed">{p.desc}</p>
               </div>
             ))}

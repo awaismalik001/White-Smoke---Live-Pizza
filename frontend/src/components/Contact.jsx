@@ -52,7 +52,7 @@ export default function Contact() {
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-brand-red text-xs font-bold tracking-[4px] uppercase block mb-3"
+            className="text-brand-red text-xs font-bold tracking-wider uppercase block mb-3"
           >
             Visit or Order
           </motion.span>
@@ -61,7 +61,7 @@ export default function Contact() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="font-syne font-black text-[clamp(2rem,4.5vw,3.75rem)] text-white tracking-tight"
+            className="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight"
           >
             Connect With Us
           </motion.h2>

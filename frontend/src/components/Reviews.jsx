@@ -95,7 +95,7 @@ export default function Reviews() {
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-brand-red text-xs font-bold tracking-[4px] uppercase block mb-3"
+            className="text-brand-red text-xs font-bold tracking-wider uppercase block mb-3"
           >
             Guest Opinions
           </motion.span>
@@ -104,7 +104,7 @@ export default function Reviews() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="font-syne font-black text-[clamp(2rem,4.5vw,3.75rem)] text-white tracking-tight"
+            className="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight"
           >
             Real Reviews
           </motion.h2>
@@ -143,11 +143,11 @@ export default function Reviews() {
               </div>
 
               <div className="pt-5 border-t border-white/[0.08] mt-6 flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-brand-red to-orange-500 flex items-center justify-center font-syne font-bold text-white text-xs">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-brand-red to-orange-500 flex items-center justify-center font-heading font-bold text-white text-xs">
                   {r.name.charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <h4 className="font-syne font-bold text-sm text-white">{r.name}</h4>
+                  <h4 className="font-heading font-bold text-sm text-white">{r.name}</h4>
                   <span className="text-[11px] text-zinc-500 flex items-center gap-1">
                     <FiCheckCircle className="text-emerald-500" /> Verified Customer
                   </span>
@@ -160,7 +160,7 @@ export default function Reviews() {
         {/* Submit Review Card */}
         <div className="max-w-2xl mx-auto glass-card rounded-3xl p-8 sm:p-10 border border-white/10">
           <div className="text-center mb-8">
-            <h3 className="font-syne font-bold text-2xl text-white">Share Your Taste Experience</h3>
+            <h3 className="font-heading font-bold text-xl sm:text-2xl text-white">Share Your Taste Experience</h3>
             <p className="text-zinc-400 text-xs mt-2">Help others discover the best items on our menu.</p>
           </div>
 

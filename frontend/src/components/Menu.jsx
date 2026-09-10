@@ -109,7 +109,7 @@ export default function Menu() {
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-brand-red text-xs font-bold tracking-[4px] uppercase block mb-3"
+            className="text-brand-red text-xs font-bold tracking-wider uppercase block mb-3"
           >
             Handcrafted Flavors
           </motion.span>
@@ -118,7 +118,7 @@ export default function Menu() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="font-syne font-black text-[clamp(2rem,4.5vw,3.75rem)] text-white tracking-tight"
+            className="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight"
           >
             Explore The Menu
           </motion.h2>
@@ -173,7 +173,7 @@ export default function Menu() {
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-8">
                 <span className="text-brand-red text-xs font-bold uppercase tracking-widest block mb-1">Category Highlight</span>
-                <h3 className="font-syne font-black text-3xl text-white">{activeTab}</h3>
+                <h3 className="font-heading font-extrabold text-2xl sm:text-3xl text-white">{activeTab}</h3>
                 <p className="text-zinc-300 text-xs mt-2">
                   Prepared fresh to order using original recipes and authentic cheese blends.
                 </p>
@@ -196,7 +196,7 @@ export default function Menu() {
                           <div className="w-12 h-12 rounded-2xl bg-brand-red/10 border border-brand-red/30 flex items-center justify-center text-brand-red font-bold text-lg mb-4">
                             #{ci + 1}
                           </div>
-                          <h4 className="font-syne font-bold text-2xl text-white">{activeTab}</h4>
+                          <h4 className="font-heading font-bold text-xl sm:text-2xl text-white">{activeTab}</h4>
                           <p className="text-zinc-400 text-xs mt-1">Pack {ci + 1}</p>
                         </div>
 
@@ -204,7 +204,7 @@ export default function Menu() {
                           {chunk.slice(0, 3).map((item, idx) => (
                             <div key={idx} className="flex justify-between items-center text-xs">
                               <span className="text-zinc-300 truncate max-w-[170px]">{item.name}</span>
-                              <span className="text-brand-gold font-semibold font-syne ml-2 shrink-0">Rs.{item.price}</span>
+                              <span className="text-brand-gold font-bold font-heading ml-2 shrink-0">Rs.{item.price}</span>
                             </div>
                           ))}
                           {chunk.length > 3 && (
@@ -227,13 +227,13 @@ export default function Menu() {
                             <span className="text-brand-red text-[11px] font-bold uppercase tracking-wider">Full Price List</span>
                             <span className="text-zinc-400 text-xs font-semibold">{chunk.length} Items</span>
                           </div>
-                          <h4 className="font-syne font-bold text-lg text-white mb-4">{activeTab}</h4>
+                          <h4 className="font-heading font-bold text-lg text-white mb-4">{activeTab}</h4>
 
                           <div className="space-y-3 overflow-y-auto max-h-[220px] pr-1">
                             {chunk.map((item, i) => (
                               <div key={i} className="flex justify-between items-start text-xs border-b border-white/5 pb-2">
                                 <span className="text-zinc-200 font-medium">{item.name}</span>
-                                <span className="text-brand-gold font-syne font-bold ml-2 shrink-0">
+                                <span className="text-brand-gold font-heading font-bold ml-2 shrink-0">
                                   Rs.{item.price}
                                 </span>
                               </div>
