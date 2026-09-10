@@ -1,13 +1,12 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FiShoppingBag, FiBookOpen, FiPhoneCall } from 'react-icons/fi'
 import Navbar from '../components/Navbar'
 import Deals from '../components/Deals'
 import Footer from '../components/Footer'
-import OrderModal from '../components/OrderModal'
+import { useCart } from '../context/CartContext'
 
 export default function DealsPage() {
-  const [showOrder, setShowOrder] = useState(false)
+  const { openCart } = useCart()
 
   return (
     <div className="bg-brand-dark min-h-screen flex flex-col">
@@ -24,7 +23,7 @@ export default function DealsPage() {
         </div>
 
         {/* Full Deals Component */}
-        <Deals onOrder={() => setShowOrder(true)} />
+        <Deals />
 
         {/* Bottom Menu & Order CTA Strip */}
         <section className="border-t border-white/[0.08] bg-zinc-950/80 py-16 px-6">
@@ -41,10 +40,10 @@ export default function DealsPage() {
 
             <div className="mt-8 flex flex-wrap justify-center items-center gap-3 sm:gap-4">
               <button
-                onClick={() => setShowOrder(true)}
+                onClick={openCart}
                 className="inline-flex items-center gap-2.5 bg-brand-red hover:bg-brand-red2 text-white font-bold text-xs sm:text-sm px-8 py-3.5 rounded-full transition-all duration-300 box-glow-red hover:scale-105 active:scale-95 tracking-wide"
               >
-                <FiShoppingBag className="text-base" /> Place Order Online
+                <FiShoppingBag className="text-base" /> View Cart & Order
               </button>
               <Link
                 to="/menu"
@@ -64,9 +63,6 @@ export default function DealsPage() {
       </main>
 
       <Footer />
-
-      {/* Direct Order Modal */}
-      {showOrder && <OrderModal onClose={() => setShowOrder(false)} />}
     </div>
   )
 }

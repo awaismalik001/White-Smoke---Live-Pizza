@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { FiMapPin, FiPhone, FiClock, FiMessageCircle, FiShoppingBag, FiSearch, FiCalendar } from 'react-icons/fi'
-import OrderModal from './OrderModal'
 import TrackOrder from './TrackOrder'
+import { useCart } from '../context/CartContext'
 
 const WA = 'https://wa.me/923000000000'
 
@@ -34,8 +34,8 @@ const contactCards = [
 ]
 
 export default function Contact() {
-  const [showOrder, setShowOrder] = useState(false)
   const [showTrack, setShowTrack] = useState(false)
+  const { openCart } = useCart()
 
   const reserveWA = () => {
     const msg = encodeURIComponent(
@@ -79,10 +79,10 @@ export default function Contact() {
         {/* Quick Launch Action Ribbon */}
         <div className="flex flex-wrap justify-center gap-3 mb-14">
           <button
-            onClick={() => setShowOrder(true)}
+            onClick={openCart}
             className="inline-flex items-center gap-2.5 bg-brand-red hover:bg-brand-red2 text-white font-bold text-xs tracking-wider uppercase px-7 py-3.5 rounded-full transition-all duration-300 box-glow-red hover:scale-105 active:scale-95"
           >
-            <FiShoppingBag className="text-base" /> Place Live Order
+            <FiShoppingBag className="text-base" /> View Cart & Order
           </button>
           <button
             onClick={reserveWA}
@@ -148,7 +148,6 @@ export default function Contact() {
         </div>
       </div>
 
-      {showOrder && <OrderModal onClose={() => setShowOrder(false)} />}
       {showTrack && <TrackOrder onClose={() => setShowTrack(false)} />}
     </section>
   )

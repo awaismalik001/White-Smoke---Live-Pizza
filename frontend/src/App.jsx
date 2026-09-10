@@ -7,6 +7,7 @@ import HomePage from './pages/HomePage'
 import MenuPage from './pages/MenuPage'
 import DealsPage from './pages/DealsPage'
 import ScrollToTop from './components/ScrollToTop'
+import CartDrawer from './components/CartDrawer'
 
 // Admin
 import AdminLogin from './admin/AdminLogin'
@@ -28,6 +29,7 @@ export default function App() {
   return (
     <>
       <ScrollToTop />
+      <CartDrawer />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/menu" element={<MenuPage />} />

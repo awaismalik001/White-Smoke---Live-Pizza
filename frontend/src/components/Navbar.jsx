@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { FiMenu, FiX, FiPhoneCall } from 'react-icons/fi'
-import OrderModal from './OrderModal'
+import { FiMenu, FiX, FiPhoneCall, FiShoppingBag } from 'react-icons/fi'
+import { useCart } from '../context/CartContext'
 
 const links = [
   { name: 'Home', to: '/', type: 'home' },
@@ -17,7 +17,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
-  const [showOrder, setShowOrder] = useState(false)
+  const { count, openCart } = useCart()
 
   const navigate = useNavigate()
   const location = useLocation()
@@ -153,10 +153,15 @@ export default function Navbar() {
               <FiPhoneCall className="text-base" />
             </a>
             <button
-              onClick={() => setShowOrder(true)}
-              className="bg-brand-red hover:bg-brand-red2 text-white text-xs font-bold px-5 py-2 rounded-full transition-all duration-300 box-glow-red hover:box-glow-red-strong hover:scale-105 active:scale-95 tracking-wide"
+              onClick={openCart}
+              className="relative bg-brand-red hover:bg-brand-red2 text-white text-xs font-bold px-5 py-2 rounded-full transition-all duration-300 box-glow-red hover:box-glow-red-strong hover:scale-105 active:scale-95 tracking-wide flex items-center gap-2"
             >
-              Order Now
+              <FiShoppingBag className="text-sm" /> Cart
+              {count > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 bg-white text-brand-red text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow-lg">
+                  {count}
+                </span>
+              )}
             </button>
           </div>
 
@@ -197,19 +202,16 @@ export default function Navbar() {
               <button
                 onClick={() => {
                   setOpen(false)
-                  setShowOrder(true)
+                  openCart()
                 }}
-                className="mt-2 w-full bg-brand-red text-white text-xs font-bold py-3 rounded-xl tracking-wider uppercase"
+                className="mt-2 w-full bg-brand-red text-white text-xs font-bold py-3 rounded-xl tracking-wider uppercase flex items-center justify-center gap-2"
               >
-                Order Online
+                <FiShoppingBag /> View Cart {count > 0 && `(${count})`}
               </button>
             </motion.div>
           )}
         </AnimatePresence>
       </header>
-
-      {/* Global Order Modal from Navbar CTA */}
-      {showOrder && <OrderModal onClose={() => setShowOrder(false)} />}
     </>
   )
 }

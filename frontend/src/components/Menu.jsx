@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { FiPlus } from 'react-icons/fi'
+import toast from 'react-hot-toast'
 import { getMenu } from '../hooks/useApi'
+import { useCart } from '../context/CartContext'
 
 // High Definition food photos from Unsplash for each menu category
 const CATEGORY_IMAGES = {
@@ -12,6 +15,17 @@ const CATEGORY_IMAGES = {
   'Pasta':           'https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=900&auto=format&fit=crop',
   'Donor & Sandwich':'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?q=80&w=900&auto=format&fit=crop',
   'Beverages':       'https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=900&auto=format&fit=crop',
+}
+
+// Parse a price string into size variants.
+// e.g. 'S:500 / M:1050 / L:1600 / XL:2050' -> [{ label: 'S', price: 500 }, ...]
+// Returns [] when the price is a single number.
+const parseSizes = (priceStr) => {
+  const matches = [...String(priceStr).matchAll(/([A-Za-z]+)\s*:\s*(\d+)/g)]
+  if (matches.length > 0) {
+    return matches.map(m => ({ label: m[1].toUpperCase(), price: parseInt(m[2]) }))
+  }
+  return []
 }
 
 const FALLBACK = {
@@ -82,6 +96,15 @@ const FALLBACK = {
 export default function Menu() {
   const [menu, setMenu] = useState(FALLBACK)
   const [activeTab, setActiveTab] = useState(Object.keys(FALLBACK)[0])
+  const { addItem } = useCart()
+
+  const handleAddToCart = (item, size) => {
+    const name = size ? `${item.name} (${size.label})` : item.name
+    const price = size ? size.price : parseInt(String(item.price).replace(/[^\d]/g, ''))
+    if (!price) return toast.error('Price unavailable for this item.')
+    addItem({ id: `menu-${activeTab}-${name}`, name, price })
+    toast.success(`${name} added to cart!`)
+  }
 
   useEffect(() => {
     getMenu()
@@ -230,19 +253,41 @@ export default function Menu() {
                           <h4 className="font-heading font-bold text-lg text-white mb-4">{activeTab}</h4>
 
                           <div className="space-y-3 overflow-y-auto max-h-[220px] pr-1">
-                            {chunk.map((item, i) => (
-                              <div key={i} className="flex justify-between items-start text-xs border-b border-white/5 pb-2">
-                                <span className="text-zinc-200 font-medium">{item.name}</span>
-                                <span className="text-brand-gold font-heading font-bold ml-2 shrink-0">
-                                  Rs.{item.price}
-                                </span>
-                              </div>
-                            ))}
+                            {chunk.map((item, i) => {
+                              const sizes = parseSizes(item.price)
+                              return (
+                                <div key={i} className="flex justify-between items-start gap-2 text-xs border-b border-white/5 pb-2">
+                                  <span className="text-zinc-200 font-medium">{item.name}</span>
+                                  {sizes.length > 0 ? (
+                                    <div className="flex flex-wrap gap-1 justify-end shrink-0">
+                                      {sizes.map(s => (
+                                        <button
+                                          key={s.label}
+                                          onClick={() => handleAddToCart(item, s)}
+                                          title={`Add ${item.name} (${s.label}) to cart`}
+                                          className="bg-brand-red/15 hover:bg-brand-red text-brand-red hover:text-white border border-brand-red/40 px-1.5 py-0.5 rounded text-[10px] font-bold transition-all duration-200"
+                                        >
+                                          {s.label} Rs.{s.price}
+                                        </button>
+                                      ))}
+                                    </div>
+                                  ) : (
+                                    <button
+                                      onClick={() => handleAddToCart(item, null)}
+                                      title={`Add ${item.name} to cart`}
+                                      className="flex items-center gap-1 bg-brand-red/15 hover:bg-brand-red text-brand-red hover:text-white border border-brand-red/40 px-2 py-0.5 rounded text-[10px] font-bold transition-all duration-200 shrink-0"
+                                    >
+                                      <FiPlus /> Rs.{item.price}
+                                    </button>
+                                  )}
+                                </div>
+                              )
+                            })}
                           </div>
                         </div>
 
                         <div className="pt-3 border-t border-white/10 text-center">
-                          <span className="text-[11px] text-zinc-400">Available for Dine-in &amp; Takeaway</span>
+                          <span className="text-[11px] text-zinc-400">Tap a price to add to cart · Dine-in & Takeaway</span>
                         </div>
                       </div>
                     </div>

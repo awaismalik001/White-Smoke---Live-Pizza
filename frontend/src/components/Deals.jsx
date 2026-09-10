@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
-import { FiCheckCircle } from 'react-icons/fi'
+import { FiCheckCircle, FiPlus } from 'react-icons/fi'
+import toast from 'react-hot-toast'
+import { useCart } from '../context/CartContext'
 
-const DEALS = [
+export const DEALS = [
   {
     id: 1,
     category: 'Special Deals',
@@ -105,20 +106,16 @@ const DEALS = [
   },
 ]
 
-export default function Deals({ onOrder }) {
-  const navigate = useNavigate()
+export default function Deals() {
+  const { addItem } = useCart()
 
-  const handleOrder = (deal) => {
-    if (onOrder) {
-      onOrder(deal)
-    } else {
-      const el = document.getElementById('contact')
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' })
-      } else {
-        navigate('/#contact')
-      }
-    }
+  const handleAddToCart = (deal) => {
+    addItem({
+      id: `deal-${deal.id}`,
+      name: `${deal.title} (${deal.badge})`,
+      price: parseInt(deal.price.replace(/,/g, '')),
+    })
+    toast.success(`${deal.title} added to cart!`)
   }
 
   return (
@@ -218,10 +215,10 @@ export default function Deals({ onOrder }) {
                   </div>
 
                   <button
-                    onClick={() => handleOrder(deal)}
-                    className="bg-brand-red hover:bg-brand-red2 text-white text-xs font-bold px-5 py-2.5 rounded-full transition-all duration-300 box-glow-red hover:scale-105 active:scale-95"
+                    onClick={() => handleAddToCart(deal)}
+                    className="bg-brand-red hover:bg-brand-red2 text-white text-xs font-bold px-5 py-2.5 rounded-full transition-all duration-300 box-glow-red hover:scale-105 active:scale-95 flex items-center gap-1.5"
                   >
-                    Order Combo
+                    <FiPlus className="text-sm" /> Add to Cart
                   </button>
                 </div>
               </div>
