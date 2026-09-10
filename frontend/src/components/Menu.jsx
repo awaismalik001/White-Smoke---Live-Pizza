@@ -17,6 +17,43 @@ const CATEGORY_IMAGES = {
   'Beverages':       'https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=900&auto=format&fit=crop',
 }
 
+// Two extra food-specific photos per category for the gallery tiles below
+// the main banner, so the left column matches the flip cards' height.
+const CATEGORY_GALLERY = {
+  'Pizza (Regular)': [
+    'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=600&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=600&auto=format&fit=crop',
+  ],
+  'Pizza (Special)': [
+    'https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?q=80&w=600&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1588315029754-2dd089d39a1a?q=80&w=600&auto=format&fit=crop',
+  ],
+  'Burgers': [
+    'https://images.unsplash.com/photo-1571091718767-18b5b1457add?q=80&w=600&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1586190848861-99aa4a171c90?q=80&w=600&auto=format&fit=crop',
+  ],
+  'Rolls': [
+    'https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=600&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1553909489-cd47e0907980?q=80&w=600&auto=format&fit=crop',
+  ],
+  'Appetizer': [
+    'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?q=80&w=600&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?q=80&w=600&auto=format&fit=crop',
+  ],
+  'Pasta': [
+    'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?q=80&w=600&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?q=80&w=600&auto=format&fit=crop',
+  ],
+  'Donor & Sandwich': [
+    'https://images.unsplash.com/photo-1509722747041-616f39b57569?q=80&w=600&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1481070555726-e2fe8357725c?q=80&w=600&auto=format&fit=crop',
+  ],
+  'Beverages': [
+    'https://images.unsplash.com/photo-1581006852262-e4307cf6283a?q=80&w=600&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1437418747212-8d9709afab22?q=80&w=600&auto=format&fit=crop',
+  ],
+}
+
 // Parse a price string into size variants.
 // e.g. 'S:500 / M:1050 / L:1600 / XL:2050' -> [{ label: 'S', price: 500 }, ...]
 // Returns [] when the price is a single number.
@@ -26,6 +63,15 @@ const parseSizes = (priceStr) => {
     return matches.map(m => ({ label: m[1].toUpperCase(), price: parseInt(m[2]) }))
   }
   return []
+}
+
+// Full names for size abbreviations found in price strings.
+const SIZE_LABELS = {
+  S: 'Small',
+  M: 'Medium',
+  L: 'Large',
+  XL: 'Extra Large',
+  R: 'Regular',
 }
 
 const FALLBACK = {
@@ -96,6 +142,7 @@ const FALLBACK = {
 export default function Menu() {
   const [menu, setMenu] = useState(FALLBACK)
   const [activeTab, setActiveTab] = useState(Object.keys(FALLBACK)[0])
+  const [flipped, setFlipped] = useState(null)
   const { addItem } = useCart()
 
   const handleAddToCart = (item, size) => {
@@ -121,7 +168,7 @@ export default function Menu() {
   const currentImg = CATEGORY_IMAGES[activeTab] || CATEGORY_IMAGES['Pizza (Regular)']
 
   return (
-    <section id="menu" className="py-28 px-6 relative bg-zinc-950">
+    <section id="menu" className="py-28 px-6 relative bg-zinc-950 overflow-hidden">
       {/* Background ambient lighting */}
       <div className="absolute top-1/2 left-0 w-96 h-96 bg-brand-red/10 rounded-full blur-[140px] pointer-events-none" />
 
@@ -163,7 +210,7 @@ export default function Menu() {
             return (
               <button
                 key={tab}
-                onClick={() => setActiveTab(tab)}
+                onClick={() => { setActiveTab(tab); setFlipped(null) }}
                 className={`relative px-5 py-2.5 rounded-full text-xs font-bold tracking-wide transition-all duration-300 ${
                   isActive
                     ? 'bg-brand-red text-white box-glow-red scale-105'
@@ -186,35 +233,60 @@ export default function Menu() {
             transition={{ duration: 0.4 }}
             className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch"
           >
-            {/* Left Big Feature Banner with Real HD Food Photo */}
-            <div className="lg:col-span-5 relative rounded-3xl overflow-hidden min-h-[380px] border border-white/10 group">
-              <img
-                src={currentImg}
-                alt={activeTab}
-                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 brightness-95"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-8">
-                <span className="text-brand-red text-xs font-bold uppercase tracking-widest block mb-1">Category Highlight</span>
-                <h3 className="font-heading font-extrabold text-2xl sm:text-3xl text-white">{activeTab}</h3>
-                <p className="text-zinc-300 text-xs mt-2">
-                  Prepared fresh to order using original recipes and authentic cheese blends.
-                </p>
-                <div className="mt-4 inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-semibold text-white">
-                  <span>{items.length} items available</span>
+            {/* Left Column: Main Banner + Gallery Tiles — stretches to match
+                the flip cards' height so there is no empty space */}
+            <div className="lg:col-span-6 flex flex-col gap-4">
+              {/* Main Banner */}
+              <div className="relative rounded-3xl overflow-hidden flex-1 min-h-[380px] border border-white/10 group">
+                <img
+                  src={currentImg}
+                  alt={activeTab}
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 brightness-95"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-8">
+                  <span className="text-brand-red text-xs font-bold uppercase tracking-widest block mb-1">Category Highlight</span>
+                  <h3 className="font-heading font-extrabold text-2xl sm:text-3xl text-white">{activeTab}</h3>
+                  <p className="text-zinc-300 text-xs mt-2">
+                    Prepared fresh to order using original recipes and authentic cheese blends.
+                  </p>
+                  <div className="mt-4 inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-semibold text-white">
+                    <span>{items.length} items available</span>
+                  </div>
                 </div>
+              </div>
+
+              {/* Gallery Tiles — extra food photos for this category */}
+              <div className="grid grid-cols-2 gap-4 h-[180px] shrink-0">
+                {(CATEGORY_GALLERY[activeTab] || CATEGORY_GALLERY['Pizza (Regular)']).map((img, gi) => (
+                  <div key={gi} className="relative rounded-2xl overflow-hidden border border-white/10 group/tile">
+                    <img
+                      src={img}
+                      alt={`${activeTab} ${gi + 2}`}
+                      className="absolute inset-0 w-full h-full object-cover group-hover/tile:scale-110 transition-transform duration-700 brightness-90"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                    <span className="absolute bottom-3 left-3 text-[10px] font-bold uppercase tracking-widest text-white/80">
+                      {activeTab}
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
 
             {/* Right Cards Grid with 3D Flip capability */}
-            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="lg:col-span-6 grid grid-cols-1 gap-6">
               {Array.from({ length: Math.ceil(items.length / 5) }, (_, ci) => {
                 const chunk = items.slice(ci * 5, ci * 5 + 5)
                 return (
-                  <div key={ci} className="flip-card h-[380px] cursor-pointer">
+                  <div
+                    key={ci}
+                    onClick={() => setFlipped(flipped === ci ? null : ci)}
+                    className={`flip-card min-h-[680px] sm:min-h-[720px] cursor-pointer ${flipped === ci ? 'flipped' : ''}`}
+                  >
                     <div className="flip-inner">
                       {/* Front Card */}
-                      <div className="flip-front glass-card p-6 flex flex-col justify-between">
+                      <div className="flip-front glass-card p-8 sm:p-10 flex flex-col justify-between">
                         <div>
                           <div className="w-12 h-12 rounded-2xl bg-brand-red/10 border border-brand-red/30 flex items-center justify-center text-brand-red font-bold text-lg mb-4">
                             #{ci + 1}
@@ -223,59 +295,80 @@ export default function Menu() {
                           <p className="text-zinc-400 text-xs mt-1">Pack {ci + 1}</p>
                         </div>
 
-                        <div className="space-y-3 my-auto">
-                          {chunk.slice(0, 3).map((item, idx) => (
-                            <div key={idx} className="flex justify-between items-center text-xs">
-                              <span className="text-zinc-300 truncate max-w-[170px]">{item.name}</span>
-                              <span className="text-brand-gold font-bold font-heading ml-2 shrink-0">Rs.{item.price}</span>
-                            </div>
-                          ))}
-                          {chunk.length > 3 && (
-                            <p className="text-zinc-500 text-[11px] italic">+{chunk.length - 3} more items...</p>
-                          )}
+                        <div className="grid grid-cols-1 gap-y-6 my-auto">
+                          {chunk.map((item, idx) => {
+                            const sizes = parseSizes(item.price)
+                            return (
+                              <div key={idx}>
+                                <div className="flex justify-between items-center gap-3 text-lg">
+                                  <span className="text-zinc-300 truncate">{item.name}</span>
+                                  {sizes.length === 0 && (
+                                    <span className="text-brand-gold font-bold font-heading shrink-0">Rs.{item.price}</span>
+                                  )}
+                                </div>
+                                {sizes.length > 0 && (
+                                  <div className="flex flex-wrap gap-2 mt-2">
+                                    {sizes.map(s => (
+                                      <span
+                                        key={s.label}
+                                        className="inline-flex flex-col items-center bg-white/[0.04] border border-white/10 rounded-lg px-3 py-1.5 leading-tight"
+                                      >
+                                        <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
+                                          {SIZE_LABELS[s.label] || s.label}
+                                        </span>
+                                        <span className="text-brand-gold font-bold font-heading text-sm">
+                                          Rs.{s.price}
+                                        </span>
+                                      </span>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            )
+                          })}
                         </div>
 
                         <div className="pt-4 border-t border-white/[0.08] flex items-center justify-between">
                           <span className="text-brand-red text-xs font-bold tracking-wider uppercase">
-                            Hover to Flip 3D
+                            Hover / Tap to Flip 3D
                           </span>
                           <span className="text-zinc-500 text-xs">↻</span>
                         </div>
                       </div>
 
                       {/* Back Card */}
-                      <div className="flip-back p-6 flex flex-col justify-between bg-gradient-to-br from-zinc-900 via-zinc-950 to-brand-red/20 border border-brand-red/50 shadow-[inset_0_0_30px_rgba(229,0,0,0.15)]">
+                      <div className="flip-back p-8 sm:p-10 flex flex-col justify-between bg-gradient-to-br from-zinc-900 via-zinc-950 to-brand-red/20 border border-brand-red/50 shadow-[inset_0_0_30px_rgba(229,0,0,0.15)]">
                         <div>
                           <div className="flex items-center justify-between mb-4">
-                            <span className="text-brand-red text-[11px] font-bold uppercase tracking-wider">Full Price List</span>
-                            <span className="text-zinc-400 text-xs font-semibold">{chunk.length} Items</span>
+                            <span className="text-brand-red text-xs font-bold uppercase tracking-wider">Full Price List</span>
+                            <span className="text-zinc-400 text-sm font-semibold">{chunk.length} Items</span>
                           </div>
-                          <h4 className="font-heading font-bold text-lg text-white mb-4">{activeTab}</h4>
+                          <h4 className="font-heading font-bold text-xl text-white mb-4">{activeTab}</h4>
 
-                          <div className="space-y-3 overflow-y-auto max-h-[220px] pr-1">
+                          <div className="grid grid-cols-1 gap-y-5 w-full">
                             {chunk.map((item, i) => {
                               const sizes = parseSizes(item.price)
                               return (
-                                <div key={i} className="flex justify-between items-start gap-2 text-xs border-b border-white/5 pb-2">
-                                  <span className="text-zinc-200 font-medium">{item.name}</span>
+                                <div key={i} className="flex justify-between items-start gap-3 text-lg border-b border-white/5 pb-4">
+                                  <span className="text-zinc-100 font-medium leading-snug truncate">{item.name}</span>
                                   {sizes.length > 0 ? (
-                                    <div className="flex flex-wrap gap-1 justify-end shrink-0">
+                                    <div className="flex flex-wrap gap-2 justify-end">
                                       {sizes.map(s => (
                                         <button
                                           key={s.label}
-                                          onClick={() => handleAddToCart(item, s)}
+                                          onClick={(e) => { e.stopPropagation(); handleAddToCart(item, s) }}
                                           title={`Add ${item.name} (${s.label}) to cart`}
-                                          className="bg-brand-red/15 hover:bg-brand-red text-brand-red hover:text-white border border-brand-red/40 px-1.5 py-0.5 rounded text-[10px] font-bold transition-all duration-200"
+                                          className="bg-brand-red/15 hover:bg-brand-red text-brand-red hover:text-white border border-brand-red/40 px-2.5 py-1.5 rounded text-sm font-bold transition-all duration-200 whitespace-nowrap"
                                         >
-                                          {s.label} Rs.{s.price}
+                                          {SIZE_LABELS[s.label] || s.label} Rs.{s.price}
                                         </button>
                                       ))}
                                     </div>
                                   ) : (
                                     <button
-                                      onClick={() => handleAddToCart(item, null)}
+                                      onClick={(e) => { e.stopPropagation(); handleAddToCart(item, null) }}
                                       title={`Add ${item.name} to cart`}
-                                      className="flex items-center gap-1 bg-brand-red/15 hover:bg-brand-red text-brand-red hover:text-white border border-brand-red/40 px-2 py-0.5 rounded text-[10px] font-bold transition-all duration-200 shrink-0"
+                                      className="flex items-center gap-1.5 bg-brand-red/15 hover:bg-brand-red text-brand-red hover:text-white border border-brand-red/40 px-3 py-1.5 rounded text-sm font-bold transition-all duration-200 shrink-0 whitespace-nowrap"
                                     >
                                       <FiPlus /> Rs.{item.price}
                                     </button>
@@ -287,7 +380,7 @@ export default function Menu() {
                         </div>
 
                         <div className="pt-3 border-t border-white/10 text-center">
-                          <span className="text-[11px] text-zinc-400">Tap a price to add to cart · Dine-in & Takeaway</span>
+                          <span className="text-xs text-zinc-400">Tap a price to add to cart · Dine-in & Takeaway</span>
                         </div>
                       </div>
                     </div>
