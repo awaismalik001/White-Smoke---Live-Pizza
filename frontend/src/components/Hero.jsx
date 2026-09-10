@@ -117,8 +117,8 @@ export default function Hero() {
 
       {/* Hero Body */}
       <div className="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-        {/* Left Typography */}
-        <div className="lg:col-span-7 text-center lg:text-left">
+        {/* Left Typography — shifted right on large screens toward the image */}
+        <div className="lg:col-span-7 text-center lg:text-left lg:pl-16">
           {/* Eyebrow badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -213,7 +213,7 @@ export default function Hero() {
           {/* Centerpiece Image Container */}
           <div className="relative w-full max-w-[360px] sm:max-w-[420px] aspect-square rounded-3xl overflow-hidden border border-white/10 p-2 sm:p-3 bg-gradient-to-b from-white/[0.06] to-transparent shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] group">
             <img
-              src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1200&auto=format&fit=crop"
+              src="/images/hero-pizza.png"
               alt="White Smoke Signature Pizza"
               className="w-full h-full object-cover rounded-2xl transition-transform duration-700 group-hover:scale-105 brightness-105 contrast-110"
               loading="eager"
