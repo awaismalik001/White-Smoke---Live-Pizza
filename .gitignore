@@ -1,7 +1,7 @@
 # Secrets and per-machine configuration
 .env
 .env.*
-!.env.example
+
 *.pem
 *.key
 *.crt
